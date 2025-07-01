@@ -5,10 +5,7 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
-
-
 
 @Entity
 @Table(name = "quota_type_pret")
@@ -17,27 +14,25 @@ public class QuotaTypePret {
     @EmbeddedId
     private QuotaTypePretId id;
     
-    @Column(name = "quota")
-    private Integer quota;
-    
     @ManyToOne
-    @MapsId("idProfil")
-    @JoinColumn(name = "id_profil")
+    @JoinColumn(name = "id_profil", insertable = false, updatable = false)
     private Profil profil;
     
     @ManyToOne
-    @MapsId("idTypePret")
-    @JoinColumn(name = "id_type_pret")
+    @JoinColumn(name = "id_type_pret", insertable = false, updatable = false)
     private TypePret typePret;
+    
+    @Column(name = "quota", nullable = false)
+    private Integer quota;
     
     // Constructeurs
     public QuotaTypePret() {}
     
-    public QuotaTypePret(QuotaTypePretId id, Integer quota, Profil profil, TypePret typePret) {
-        this.id = id;
-        this.quota = quota;
+    public QuotaTypePret(Profil profil, TypePret typePret, Integer quota) {
+        this.id = new QuotaTypePretId(profil.getIdProfil(), typePret.getIdTypePret());
         this.profil = profil;
         this.typePret = typePret;
+        this.quota = quota;
     }
     
     // Getters et Setters
@@ -49,20 +44,15 @@ public class QuotaTypePret {
         this.id = id;
     }
     
-    public Integer getQuota() {
-        return quota;
-    }
-    
-    public void setQuota(Integer quota) {
-        this.quota = quota;
-    }
-    
     public Profil getProfil() {
         return profil;
     }
     
     public void setProfil(Profil profil) {
         this.profil = profil;
+        if (profil != null && this.id != null) {
+            this.id.setIdProfil(profil.getIdProfil());
+        }
     }
     
     public TypePret getTypePret() {
@@ -71,5 +61,16 @@ public class QuotaTypePret {
     
     public void setTypePret(TypePret typePret) {
         this.typePret = typePret;
+        if (typePret != null && this.id != null) {
+            this.id.setIdTypePret(typePret.getIdTypePret());
+        }
+    }
+    
+    public Integer getQuota() {
+        return quota;
+    }
+    
+    public void setQuota(Integer quota) {
+        this.quota = quota;
     }
 }

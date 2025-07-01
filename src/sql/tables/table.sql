@@ -195,6 +195,6 @@ CREATE TABLE quota_type_pret(
 );
 
 CREATE TABLE jour_ferie(
-   id_jour INT AUTO_INCREMENT,
+   id_jour_ferie INT AUTO_INCREMENT,
    date_ferie DATETIME NOT NULL
 );
