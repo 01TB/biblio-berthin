@@ -2,6 +2,8 @@ package com.springjpa.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 @Entity
@@ -9,6 +11,7 @@ import jakarta.persistence.Table;
 public class TypePret {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_type_pret")
     private Integer idTypePret;
     
@@ -18,8 +21,7 @@ public class TypePret {
     // Constructeurs
     public TypePret() {}
     
-    public TypePret(Integer idTypePret, String type) {
-        this.idTypePret = idTypePret;
+    public TypePret(String type) {
         this.type = type;
     }
     

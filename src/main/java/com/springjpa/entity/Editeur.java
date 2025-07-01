@@ -3,6 +3,8 @@ package com.springjpa.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -12,10 +14,11 @@ import jakarta.persistence.Table;
 public class Editeur {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_editeur")
     private Integer idEditeur;
     
-    @Column(name = "nom_editeur", length = 50)
+    @Column(name = "nom_editeur", nullable = false, length = 50)
     private String nomEditeur;
     
     @Column(name = "localisation", length = 50)
@@ -24,8 +27,7 @@ public class Editeur {
     // Constructeurs
     public Editeur() {}
     
-    public Editeur(Integer idEditeur, String nomEditeur, String localisation) {
-        this.idEditeur = idEditeur;
+    public Editeur(String nomEditeur, String localisation) {
         this.nomEditeur = nomEditeur;
         this.localisation = localisation;
     }

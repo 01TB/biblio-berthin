@@ -8,7 +8,7 @@ CREATE TABLE auteur(
 CREATE TABLE editeur(
    id_editeur INT AUTO_INCREMENT,
    nom_editeur VARCHAR(50) NOT NULL,
-   localisation VARCHAR(50) NOT NULL,
+   localisation VARCHAR(50),
    PRIMARY KEY(id_editeur)
 );
 

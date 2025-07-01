@@ -3,6 +3,8 @@ package com.springjpa.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -14,6 +16,7 @@ import jakarta.persistence.Table;
 public class DureePret {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_duree_pret")
     private Integer idDureePret;
     
@@ -27,8 +30,7 @@ public class DureePret {
     // Constructeurs
     public DureePret() {}
     
-    public DureePret(Integer idDureePret, Integer duree, Profil profil) {
-        this.idDureePret = idDureePret;
+    public DureePret(Integer duree, Profil profil) {
         this.duree = duree;
         this.profil = profil;
     }
