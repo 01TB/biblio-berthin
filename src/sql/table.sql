@@ -96,15 +96,6 @@ CREATE TABLE abonnement(
    FOREIGN KEY(id_adherant) REFERENCES adherant(id_adherant)
 );
 
-CREATE TABLE inscription(
-   id_inscription INT AUTO_INCREMENT,
-   date_inscription DATETIME,
-   etat LOGICAL,
-   id_adherant INT NOT NULL,
-   PRIMARY KEY(id_inscription),
-   FOREIGN KEY(id_adherant) REFERENCES adherant(id_adherant)
-);
-
 CREATE TABLE penalite(
    id_penalite INT AUTO_INCREMENT,
    date_penalite DATETIME,
