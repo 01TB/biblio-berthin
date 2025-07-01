@@ -8,7 +8,7 @@ CREATE TABLE auteur(
 CREATE TABLE editeur(
    id_editeur INT AUTO_INCREMENT,
    nom_editeur VARCHAR(50) NOT NULL,
-   localisation VARCHAR(50) NOT NULL,
+   localisation VARCHAR(50),
    PRIMARY KEY(id_editeur)
 );
 
@@ -73,15 +73,6 @@ CREATE TABLE livre(
    FOREIGN KEY(id_editeur) REFERENCES editeur(id_editeur),
    FOREIGN KEY(id_auteur) REFERENCES auteur(id_auteur),
    FOREIGN KEY(id_langue) REFERENCES langue(id_langue)
-);
-
-CREATE TABLE accessibilite_profil_livre(
-   id_accessibilite INT AUTO_INCREMENT,
-   id_profil INT NOT NULL,
-   id_livre INT NOT NULL,
-   PRIMARY KEY(id_accessibilite),
-   FOREIGN KEY(id_profil) REFERENCES profil(id_profil),
-   FOREIGN KEY(id_livre) REFERENCES livre(id_livre)
 );
 
 CREATE TABLE adherent(
@@ -178,6 +169,14 @@ CREATE TABLE prolongation_pret(
    FOREIGN KEY(id_pret) REFERENCES pret(id_pret)
 )
 
+CREATE TABLE accessibilite_profil_livre(
+   id_profil INT NOT NULL,
+   id_livre INT NOT NULL,
+   PRIMARY KEY(id_profil,id_livre),
+   FOREIGN KEY(id_profil) REFERENCES profil(id_profil),
+   FOREIGN KEY(id_livre) REFERENCES livre(id_livre)
+);
+
 CREATE TABLE categorie_livre(
    id_livre INT NOT NULL,
    id_categorie INT NOT NULL,
@@ -196,6 +195,6 @@ CREATE TABLE quota_type_pret(
 );
 
 CREATE TABLE jour_ferie(
-   id_jour INT AUTO_INCREMENT,
+   id_jour_ferie INT AUTO_INCREMENT,
    date_ferie DATETIME NOT NULL
 );

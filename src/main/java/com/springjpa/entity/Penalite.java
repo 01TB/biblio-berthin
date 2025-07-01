@@ -21,32 +21,28 @@ public class Penalite {
     @Column(name = "id_penalite")
     private Integer idPenalite;
 
-    @Column(name = "duree")
-    private Integer duree;
-
-    @Column(name = "date_penalite")
+    @Column(name = "date_penalite", nullable = false)
     private LocalDateTime datePenalite;
 
     @ManyToOne
-    @JoinColumn(name = "id_adherant", nullable = false)
-    private Adherant adherant;
+    @JoinColumn(name = "id_adherent", nullable = false)
+    private Adherent adherent;
+
+    // Constructeurs
+    public Penalite() {}
+
+    public Penalite(LocalDateTime datePenalite, Adherent adherent) {
+        this.datePenalite = datePenalite;
+        this.adherent = adherent;
+    }
 
     // Getters et setters
-
     public Integer getIdPenalite() {
         return idPenalite;
     }
 
     public void setIdPenalite(Integer idPenalite) {
         this.idPenalite = idPenalite;
-    }
-
-    public Integer getDuree() {
-        return duree;
-    }
-
-    public void setDuree(Integer duree) {
-        this.duree = duree;
     }
 
     public LocalDateTime getDatePenalite() {
@@ -57,11 +53,11 @@ public class Penalite {
         this.datePenalite = datePenalite;
     }
 
-    public Adherant getAdherant() {
-        return adherant;
+    public Adherent getAdherent() {
+        return adherent;
     }
 
-    public void setAdherant(Adherant adherant) {
-        this.adherant = adherant;
+    public void setAdherent(Adherent adherent) {
+        this.adherent = adherent;
     }
 }

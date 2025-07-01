@@ -1,16 +1,17 @@
-
 package com.springjpa.entity;
 
-import jakarta.persistence.Embeddable;
-
-
 import java.io.Serializable;
-import java.util.Objects;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class QuotaTypePretId implements Serializable {
     
+    @Column(name = "id_profil")
     private Integer idProfil;
+    
+    @Column(name = "id_type_pret")
     private Integer idTypePret;
     
     // Constructeurs
@@ -38,18 +39,17 @@ public class QuotaTypePretId implements Serializable {
         this.idTypePret = idTypePret;
     }
     
-    // equals et hashCode
+    // equals() et hashCode() pour la clé composite
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         QuotaTypePretId that = (QuotaTypePretId) o;
-        return Objects.equals(idProfil, that.idProfil) && 
-               Objects.equals(idTypePret, that.idTypePret);
+        return idProfil.equals(that.idProfil) && idTypePret.equals(that.idTypePret);
     }
     
     @Override
     public int hashCode() {
-        return Objects.hash(idProfil, idTypePret);
+        return 31 * idProfil.hashCode() + idTypePret.hashCode();
     }
 }

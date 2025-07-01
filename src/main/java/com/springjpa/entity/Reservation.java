@@ -3,6 +3,8 @@ package com.springjpa.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -16,15 +18,15 @@ import java.time.LocalDateTime;
 public class Reservation {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_reservation")
     private Integer idReservation;
     
-    @Column(name = "date_de_reservation")
-    private LocalDateTime dateDeReservation;
-    
-    @ManyToOne
-    @JoinColumn(name = "id_admin", nullable = false)
-    private Admin admin;
+    @Column(name = "date_reservation", nullable = false)
+    private LocalDateTime dateReservation;
+
+    @Column(name = "date_expiration", nullable = false)
+    private LocalDateTime dateExpiration;
     
     @ManyToOne
     @JoinColumn(name = "id_statut", nullable = false)
@@ -35,21 +37,19 @@ public class Reservation {
     private Exemplaire exemplaire;
     
     @ManyToOne
-    @JoinColumn(name = "id_adherant", nullable = false)
-    private Adherant adherant;
+    @JoinColumn(name = "id_adherent", nullable = false)
+    private Adherent adherent;
     
     // Constructeurs
     public Reservation() {}
     
-    public Reservation(Integer idReservation, LocalDateTime dateDeReservation, 
-                       Admin admin, StatutReservation statut, Exemplaire exemplaire, 
-                       Adherant adherant) {
-        this.idReservation = idReservation;
-        this.dateDeReservation = dateDeReservation;
-        this.admin = admin;
+    public Reservation(LocalDateTime dateReservation, LocalDateTime dateExpiration, 
+                       StatutReservation statut, Exemplaire exemplaire, 
+                       Adherent adherent) {
+        this.dateReservation = dateReservation;
         this.statut = statut;
         this.exemplaire = exemplaire;
-        this.adherant = adherant;
+        this.adherent = adherent;
     }
     
     // Getters et Setters
@@ -61,20 +61,20 @@ public class Reservation {
         this.idReservation = idReservation;
     }
     
-    public LocalDateTime getDateDeReservation() {
-        return dateDeReservation;
+    public LocalDateTime getDateReservation() {
+        return dateReservation;
     }
     
-    public void setDateDeReservation(LocalDateTime dateDeReservation) {
-        this.dateDeReservation = dateDeReservation;
+    public void setDateReservation(LocalDateTime dateReservation) {
+        this.dateReservation = dateReservation;
+    }
+
+    public LocalDateTime getDateExpiration() {
+        return dateExpiration;
     }
     
-    public Admin getAdmin() {
-        return admin;
-    }
-    
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
+    public void setDateExpiration(LocalDateTime dateExpiration) {
+        this.dateExpiration = dateExpiration;
     }
     
     public StatutReservation getStatut() {
@@ -93,11 +93,11 @@ public class Reservation {
         this.exemplaire = exemplaire;
     }
     
-    public Adherant getAdherant() {
-        return adherant;
+    public Adherent getAdherent() {
+        return adherent;
     }
     
-    public void setAdherant(Adherant adherant) {
-        this.adherant = adherant;
+    public void setAdherent(Adherent adherent) {
+        this.adherent = adherent;
     }
 }
