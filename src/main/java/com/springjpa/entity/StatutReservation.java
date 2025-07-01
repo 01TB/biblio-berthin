@@ -2,6 +2,8 @@ package com.springjpa.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -11,17 +13,17 @@ import jakarta.persistence.Table;
 public class StatutReservation {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_statut")
     private Integer idStatut;
     
-    @Column(name = "nom_statut", length = 50)
+    @Column(name = "nom_statut", nullable = false, length = 50)
     private String nomStatut;
     
     // Constructeurs
     public StatutReservation() {}
     
-    public StatutReservation(Integer idStatut, String nomStatut) {
-        this.idStatut = idStatut;
+    public StatutReservation(String nomStatut) {
         this.nomStatut = nomStatut;
     }
     

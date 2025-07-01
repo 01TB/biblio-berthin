@@ -1,11 +1,11 @@
-
 package com.springjpa.entity;
 
 import java.util.Set;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -13,29 +13,25 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-
-
 @Entity
 @Table(name = "livre")
 public class Livre {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_livre")
     private Integer idLivre;
     
-    @Column(name = "titre", length = 50)
+    @Column(name = "titre", length = 50, nullable = false)
     private String titre;
     
-    @Column(name = "isbn", length = 50)
+    @Column(name = "isbn", length = 255, nullable = false)
     private String isbn;
     
-    @Column(name = "langue", length = 50)
-    private String langue;
-    
-    @Column(name = "annee_publication")
+    @Column(name = "annee_publication", nullable = false)
     private Integer anneePublication;
     
-    @Column(name = "synopsis", length = 1000)
+    @Column(name = "synopsis", columnDefinition = "TEXT")
     private String synopsis;
     
     @Column(name = "nb_page")
@@ -49,6 +45,10 @@ public class Livre {
     @JoinColumn(name = "id_auteur", nullable = false)
     private Auteur auteur;
     
+    @ManyToOne
+    @JoinColumn(name = "id_langue", nullable = false)
+    private Langue langue;
+    
     @ManyToMany
     @JoinTable(
         name = "categorie_livre",
@@ -60,18 +60,16 @@ public class Livre {
     // Constructeurs
     public Livre() {}
     
-    public Livre(Integer idLivre, String titre, String isbn, String langue, 
-                 Integer anneePublication, String synopsis, Integer nbPage, 
-                 Editeur editeur, Auteur auteur) {
-        this.idLivre = idLivre;
+    public Livre(String titre, String isbn, Integer anneePublication, String synopsis, 
+                 Integer nbPage, Editeur editeur, Auteur auteur, Langue langue) {
         this.titre = titre;
         this.isbn = isbn;
-        this.langue = langue;
         this.anneePublication = anneePublication;
         this.synopsis = synopsis;
         this.nbPage = nbPage;
         this.editeur = editeur;
         this.auteur = auteur;
+        this.langue = langue;
     }
     
     // Getters et Setters
@@ -97,14 +95,6 @@ public class Livre {
     
     public void setIsbn(String isbn) {
         this.isbn = isbn;
-    }
-    
-    public String getLangue() {
-        return langue;
-    }
-    
-    public void setLangue(String langue) {
-        this.langue = langue;
     }
     
     public Integer getAnneePublication() {
@@ -145,6 +135,14 @@ public class Livre {
     
     public void setAuteur(Auteur auteur) {
         this.auteur = auteur;
+    }
+    
+    public Langue getLangue() {
+        return langue;
+    }
+    
+    public void setLangue(Langue langue) {
+        this.langue = langue;
     }
     
     public Set<Categorie> getCategories() {
