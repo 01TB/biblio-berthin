@@ -1,24 +1,26 @@
 package com.springjpa.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "pret")
 public class Pret {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pret")
     private Integer idPret;
     
-    @Column(name = "date_debut")
+    @Column(name = "date_debut", nullable = false)
     private LocalDateTime dateDebut;
     
     @ManyToOne
@@ -34,20 +36,19 @@ public class Pret {
     private Exemplaire exemplaire;
     
     @ManyToOne
-    @JoinColumn(name = "id_adherant", nullable = false)
-    private Adherant adherant;
+    @JoinColumn(name = "id_adherent", nullable = false)
+    private Adherent adherent;
     
     // Constructeurs
     public Pret() {}
     
-    public Pret(Integer idPret, LocalDateTime dateDebut, Admin admin, 
-                TypePret typePret, Exemplaire exemplaire, Adherant adherant) {
-        this.idPret = idPret;
+    public Pret(LocalDateTime dateDebut, Admin admin, 
+                TypePret typePret, Exemplaire exemplaire, Adherent adherent) {
         this.dateDebut = dateDebut;
         this.admin = admin;
         this.typePret = typePret;
         this.exemplaire = exemplaire;
-        this.adherant = adherant;
+        this.adherent = adherent;
     }
     
     // Getters et Setters
@@ -91,11 +92,11 @@ public class Pret {
         this.exemplaire = exemplaire;
     }
     
-    public Adherant getAdherant() {
-        return adherant;
+    public Adherent getAdherent() {
+        return adherent;
     }
     
-    public void setAdherant(Adherant adherant) {
-        this.adherant = adherant;
+    public void setAdherent(Adherent adherent) {
+        this.adherent = adherent;
     }
 }

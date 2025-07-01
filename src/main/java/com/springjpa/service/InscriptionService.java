@@ -1,10 +1,11 @@
 package com.springjpa.service;
 
-import org.springframework.stereotype.Service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import com.springjpa.entity.Inscription;
+import org.springframework.stereotype.Service;
+
+import com.springjpa.entity.Abonnement;
 import com.springjpa.repository.InscriptionRepository;
 
 @Service
@@ -12,15 +13,15 @@ public class InscriptionService {
     @Autowired
     private InscriptionRepository inscriptionRepository;
 
-    public Inscription findById(Integer id){
+    public Abonnement findById(Integer id){
         return inscriptionRepository.findById(id).get();
     }
 
-    public List<Inscription> findAll(){
+    public List<Abonnement> findAll(){
         return inscriptionRepository.findAll();
     }
 
-    public void save(Inscription inscription){
+    public void save(Abonnement inscription){
         inscriptionRepository.save(inscription);
     }
 }
