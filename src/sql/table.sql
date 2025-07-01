@@ -1,29 +1,38 @@
 CREATE TABLE auteur(
-   id_auteur INT,
+   id_auteur INT AUTO_INCREMENT,
    nom_auteur VARCHAR(50) NOT NULL,
    prenom_auteur VARCHAR(50),
    PRIMARY KEY(id_auteur)
 );
 
 CREATE TABLE editeur(
-   id_editeur INT,
+   id_editeur INT AUTO_INCREMENT,
    nom_editeur VARCHAR(50),
    localisation VARCHAR(50),
    PRIMARY KEY(id_editeur)
 );
 
 CREATE TABLE categorie(
-   id_categorie INT,
-   nom_categorie INT NOT NULL,
+   id_categorie INT AUTO_INCREMENT,
+   nom_categorie VARCHAR(255) NOT NULL,
    PRIMARY KEY(id_categorie)
 );
 
 CREATE TABLE profil(
-   id_profil INT,
-   nom_profil INT NOT NULL,
+   id_profil INT AUTO_INCREMENT,
+   nom_profil VARCHAR(255) NOT NULL,
    quota_pret INT,
    quota_reservation INT,
    PRIMARY KEY(id_profil)
+);
+
+CREATE TABLE abonnement(
+   id_abonnement INT,
+   date_debut DATETIME NOT NULL,
+   date_fin DATETIME NOT NULL,
+   id_adherant INT NOT NULL,
+   PRIMARY KEY(id_abonnement)
+   FOREIGN KEY(id_adherant) REFERENCES adherant(id_adherant)
 );
 
 CREATE TABLE admin(
@@ -65,16 +74,25 @@ CREATE TABLE statut_reservation(
 CREATE TABLE livre(
    id_livre INT,
    titre VARCHAR(50),
-   isbn VARCHAR(50),
+   isbn VARCHAR(255),
    langue VARCHAR(50),
    annee_publication INT,
-   synopsis VARCHAR(1000),
+   synopsis TEXT,
    nb_page INT,
    id_editeur INT NOT NULL,
    id_auteur INT NOT NULL,
    PRIMARY KEY(id_livre),
    FOREIGN KEY(id_editeur) REFERENCES editeur(id_editeur),
    FOREIGN KEY(id_auteur) REFERENCES auteur(id_auteur)
+);
+
+CREATE TABLE accessibilite_profil_livre(
+   id_accessibilite INT,
+   id_profil INT NOT NULL,
+   id_livre INT NOT NULL,
+   PRIMARY KEY(id_accessibilite),
+   FOREIGN KEY(id_profil) REFERENCES profil(id_profil),
+   FOREIGN KEY(id_livre) REFERENCES livre(id_livre)
 );
 
 CREATE TABLE adherant(
@@ -98,12 +116,19 @@ CREATE TABLE inscription(
 
 CREATE TABLE penalite(
    id_penalite INT,
-   duree INT,
    date_penalite DATETIME,
    id_adherant INT NOT NULL,
    PRIMARY KEY(id_penalite),
    FOREIGN KEY(id_adherant) REFERENCES adherant(id_adherant)
 );
+
+CREATE TABLE type_penalite(
+   id_type_penalite INT,
+   duree INT,
+   id_profil INT NOT NULL,
+   PRIMARY KEY(id_type_penalite),
+   FOREIGN KEY(id_profil) REFERENCES profil(id_profil)
+)
 
 CREATE TABLE exemplaire(
    id_exemplaire INT,
@@ -164,4 +189,9 @@ CREATE TABLE quota_type_pret(
    PRIMARY KEY(id_profil, id_type_pret),
    FOREIGN KEY(id_profil) REFERENCES profil(id_profil),
    FOREIGN KEY(id_type_pret) REFERENCES type_pret(id_type_pret)
+);
+
+CREATE TABLE jour_ferie(
+   id_jour INT AUTO_INCREMENT,
+   date_ferie DATE NOT NULL
 );
