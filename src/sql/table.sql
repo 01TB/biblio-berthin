@@ -21,22 +21,12 @@ CREATE TABLE categorie(
 CREATE TABLE profil(
    id_profil INT AUTO_INCREMENT,
    nom_profil VARCHAR(255) NOT NULL,
-   quota_pret INT,
    quota_reservation INT,
    PRIMARY KEY(id_profil)
 );
 
-CREATE TABLE abonnement(
-   id_abonnement INT,
-   date_debut DATETIME NOT NULL,
-   date_fin DATETIME NOT NULL,
-   id_adherant INT NOT NULL,
-   PRIMARY KEY(id_abonnement)
-   FOREIGN KEY(id_adherant) REFERENCES adherant(id_adherant)
-);
-
 CREATE TABLE admin(
-   id_admin INT,
+   id_admin INT AUTO_INCREMENT,
    nom_admin VARCHAR(50),
    prenom_admin VARCHAR(50),
    password VARCHAR(50),
@@ -44,35 +34,27 @@ CREATE TABLE admin(
 );
 
 CREATE TABLE type_pret(
-   id_type_pret INT,
+   id_type_pret INT AUTO_INCREMENT,
    type VARCHAR(50),
    PRIMARY KEY(id_type_pret)
 );
 
 CREATE TABLE duree_pret(
-   id_duree_pret INT,
+   id_duree_pret INT AUTO_INCREMENT,
    duree INT,
    id_profil INT NOT NULL,
    PRIMARY KEY(id_duree_pret),
    FOREIGN KEY(id_profil) REFERENCES profil(id_profil)
 );
 
-CREATE TABLE inscription_profil(
-   id_inscri_profil INT,
-   duree INT,
-   id_profil INT NOT NULL,
-   PRIMARY KEY(id_inscri_profil),
-   FOREIGN KEY(id_profil) REFERENCES profil(id_profil)
-);
-
 CREATE TABLE statut_reservation(
-   id_statut INT,
+   id_statut INT AUTO_INCREMENT,
    nom_statut VARCHAR(50),
    PRIMARY KEY(id_statut)
 );
 
 CREATE TABLE livre(
-   id_livre INT,
+   id_livre INT AUTO_INCREMENT,
    titre VARCHAR(50),
    isbn VARCHAR(255),
    langue VARCHAR(50),
@@ -87,7 +69,7 @@ CREATE TABLE livre(
 );
 
 CREATE TABLE accessibilite_profil_livre(
-   id_accessibilite INT,
+   id_accessibilite INT AUTO_INCREMENT,
    id_profil INT NOT NULL,
    id_livre INT NOT NULL,
    PRIMARY KEY(id_accessibilite),
@@ -96,7 +78,7 @@ CREATE TABLE accessibilite_profil_livre(
 );
 
 CREATE TABLE adherant(
-   id_adherant INT,
+   id_adherant INT AUTO_INCREMENT,
    nom_adherant VARCHAR(50),
    prenom_adherant VARCHAR(50),
    password VARCHAR(50),
@@ -105,8 +87,17 @@ CREATE TABLE adherant(
    FOREIGN KEY(id_profil) REFERENCES profil(id_profil)
 );
 
+CREATE TABLE abonnement(
+   id_abonnement INT AUTO_INCREMENT,
+   date_debut DATETIME NOT NULL,
+   date_fin DATETIME NOT NULL,
+   id_adherant INT NOT NULL,
+   PRIMARY KEY(id_abonnement)
+   FOREIGN KEY(id_adherant) REFERENCES adherant(id_adherant)
+);
+
 CREATE TABLE inscription(
-   id_inscription INT,
+   id_inscription INT AUTO_INCREMENT,
    date_inscription DATETIME,
    etat LOGICAL,
    id_adherant INT NOT NULL,
@@ -115,15 +106,15 @@ CREATE TABLE inscription(
 );
 
 CREATE TABLE penalite(
-   id_penalite INT,
+   id_penalite INT AUTO_INCREMENT,
    date_penalite DATETIME,
    id_adherant INT NOT NULL,
    PRIMARY KEY(id_penalite),
    FOREIGN KEY(id_adherant) REFERENCES adherant(id_adherant)
 );
 
-CREATE TABLE type_penalite(
-   id_type_penalite INT,
+CREATE TABLE type_penalite_profil(
+   id_type_penalite INT AUTO_INCREMENT,
    duree INT,
    id_profil INT NOT NULL,
    PRIMARY KEY(id_type_penalite),
@@ -131,7 +122,7 @@ CREATE TABLE type_penalite(
 )
 
 CREATE TABLE exemplaire(
-   id_exemplaire INT,
+   id_exemplaire INT AUTO_INCREMENT,
    dispo LOGICAL,
    id_livre INT NOT NULL,
    PRIMARY KEY(id_exemplaire),
@@ -139,7 +130,7 @@ CREATE TABLE exemplaire(
 );
 
 CREATE TABLE pret(
-   id_pret INT,
+   id_pret INT AUTO_INCREMENT,
    date_debut DATETIME,
    id_admin INT NOT NULL,
    id_type_pret INT NOT NULL,
@@ -153,7 +144,7 @@ CREATE TABLE pret(
 );
 
 CREATE TABLE reservation(
-   id_reservation INT,
+   id_reservation INT AUTO_INCREMENT,
    date_de_reservation DATETIME,
    id_admin INT NOT NULL,
    id_statut INT NOT NULL,
@@ -167,7 +158,7 @@ CREATE TABLE reservation(
 );
 
 CREATE TABLE fin_pret(
-   id_fin_pret INT,
+   id_fin_pret INT AUTO_INCREMENT,
    date_fin DATETIME,
    id_pret INT NOT NULL,
    PRIMARY KEY(id_fin_pret),
