@@ -2,8 +2,8 @@ package com.springjpa.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.springjpa.entity.Penalite;
+import com.springjpa.entity.TypePenaliteProfil;
 
 @Repository
-public interface PenaliteRepository extends JpaRepository<Penalite, Integer> {
+public interface TypePenaliteProfilRepository extends JpaRepository<TypePenaliteProfil, Integer> {
 }
