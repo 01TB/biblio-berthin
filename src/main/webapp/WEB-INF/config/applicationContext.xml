@@ -15,6 +15,7 @@
     <!-- Scan for annotated components (e.g., @Service, @Repository) -->
     <context:component-scan base-package="com.springjpa" />
     <jpa:repositories base-package="com.springjpa.repository" />
+    <jpa:services base-package="com.springjpa.service" />
 
     <!-- DataSource Bean -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -23,14 +24,6 @@
         <property name="username" value="root" />
         <property name="password" value="" />
     </bean>
-
-
-    <!-- View Resolver for JSP
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/views/" />
-        <property name="suffix" value=".jsp" />
-    </bean> -->
-
 
     <!-- JPA EntityManagerFactory -->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
