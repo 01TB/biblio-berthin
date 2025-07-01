@@ -1,7 +1,5 @@
 package com.springjpa.entity;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,51 +10,51 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "retour_pret")
-public class RetourPret {
+@Table(name = "duree_reservation")
+public class DureeReservation {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_retour")
-    private Integer idRetour;
+    @Column(name = "id_duree_reservation")
+    private Integer idDureeReservation;
     
-    @Column(name = "date_retour", nullable = false)
-    private LocalDateTime dateRetour;
+    @Column(name = "duree", nullable = false)
+    private Integer duree;
     
     @ManyToOne
-    @JoinColumn(name = "id_pret", nullable = false)
-    private Pret pret;
+    @JoinColumn(name = "id_profil", nullable = false)
+    private Profil profil;
     
     // Constructeurs
-    public RetourPret() {}
+    public DureeReservation() {}
     
-    public RetourPret(LocalDateTime dateRetour, Pret pret) {
-        this.dateRetour = dateRetour;
-        this.pret = pret;
+    public DureeReservation(Integer duree, Profil profil) {
+        this.duree = duree;
+        this.profil = profil;
     }
     
     // Getters et Setters
-    public Integer getIdRetour() {
-        return idRetour;
+    public Integer getIdDureeReservation() {
+        return idDureeReservation;
     }
     
-    public void setIdRetour(Integer idRetour) {
-        this.idRetour = idRetour;
+    public void setIdDureeReservation(Integer idDureeReservation) {
+        this.idDureeReservation = idDureeReservation;
     }
     
-    public LocalDateTime getDateRetour() {
-        return dateRetour;
+    public Integer getDuree() {
+        return duree;
     }
     
-    public void setDateRetour(LocalDateTime dateRetour) {
-        this.dateRetour = dateRetour;
+    public void setDuree(Integer duree) {
+        this.duree = duree;
     }
     
-    public Pret getPret() {
-        return pret;
+    public Profil getProfil() {
+        return profil;
     }
     
-    public void setPret(Pret pret) {
-        this.pret = pret;
+    public void setProfil(Profil profil) {
+        this.profil = profil;
     }
 }
