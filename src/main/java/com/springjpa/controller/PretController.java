@@ -1,8 +1,8 @@
 package com.springjpa.controller;
 
-import com.springjpa.entity.Adherant;
+import com.springjpa.entity.Adherent;
 import com.springjpa.entity.Exemplaire;
-import com.springjpa.service.AdherantService;
+import com.springjpa.service.AdherentService;
 import com.springjpa.service.ExemplaireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +18,7 @@ public class PretController {
     private ExemplaireService exemplaireService;
 
     @Autowired
-    private AdherantService adherantService;
+    private AdherentService adherantService;
 
 
     @GetMapping("/")
@@ -38,14 +38,14 @@ public class PretController {
     @PostMapping("/preter")
     public String preterLivre(@RequestParam("adherantId") int adherantId,
                               @RequestParam("exemplaires") int[] exemplaireIds, Model model) {
-        Adherant adherant = adherantService.findById(adherantId);
-        if (adherant.getIdAdherant() == null) {
+        Adherent adherant = adherantService.findById(adherantId);
+        if (adherant.getIdAdherent() == null) {
             model.addAttribute("error", "Adhérant inexistant.");
             return "pret";
         }
 
         // 2. L'adhérant doit être inscrit (à adapter selon ta logique d'inscription)
-        boolean inscrit = adherantService.isInscri(adherant.getIdAdherant());
+        boolean inscrit = adherantService.isInscri(adherant.getIdAdherent());
         if (!inscrit) {
             model.addAttribute("error", "Adhérant non inscrit ou inscription inactive.");
             return "pret";
@@ -67,7 +67,7 @@ public class PretController {
             }
 
             // 5. Vérifier si l'adhérant n'est pas pénalisé
-            boolean penalise = adherantService.isPenalise(adherant.getIdAdherant()); 
+            boolean penalise = adherantService.isPenalise(adherant.getIdAdherent()); 
             if (penalise) {
                 model.addAttribute("error", "Adhérant pénalisé, prêt impossible.");
                 return "pret";
