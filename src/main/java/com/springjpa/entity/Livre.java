@@ -25,7 +25,7 @@ public class Livre {
     @Column(name = "titre", length = 50, nullable = false)
     private String titre;
     
-    @Column(name = "isbn", length = 255, nullable = false)
+    @Column(name = "isbn", length = 255, nullable = false, unique = true)
     private String isbn;
     
     @Column(name = "annee_publication", nullable = false)

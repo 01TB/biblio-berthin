@@ -28,6 +28,7 @@ CREATE TABLE profil(
 
 CREATE TABLE admin(
    id_admin INT AUTO_INCREMENT,
+   matricule INT UNIQUE,
    nom_admin VARCHAR(50) NOT NULL,
    prenom_admin VARCHAR(50),
    password VARCHAR(50) NOT NULL,
@@ -62,7 +63,7 @@ CREATE TABLE langue(
 CREATE TABLE livre(
    id_livre INT AUTO_INCREMENT,
    titre VARCHAR(50) NOT NULL,
-   isbn VARCHAR(255) NOT NULL,
+   isbn VARCHAR(255) UNIQUE NOT NULL,
    annee_publication INT NOT NULL,
    synopsis TEXT,
    nb_page INT,
@@ -77,6 +78,7 @@ CREATE TABLE livre(
 
 CREATE TABLE adherent(
    id_adherent INT AUTO_INCREMENT,
+   matricule INT UNIQUE,
    nom_adherent VARCHAR(50) NOT NULL,
    prenom_adherent VARCHAR(50),
    password VARCHAR(50) NOT NULL,

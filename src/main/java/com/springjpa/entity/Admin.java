@@ -17,6 +17,9 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_admin")
     private Integer idAdmin;
+
+    @Column(name = "matricule", nullable = false, unique = true)
+    private Integer matricule;
     
     @Column(name = "nom_admin", length = 50)
     private String nomAdmin;
@@ -30,7 +33,8 @@ public class Admin {
     // Constructeurs
     public Admin() {}
     
-    public Admin(String nomAdmin, String prenomAdmin, String password) {
+    public Admin(Integer matricule, String nomAdmin, String prenomAdmin, String password) {
+        this.matricule = matricule;
         this.nomAdmin = nomAdmin;
         this.prenomAdmin = prenomAdmin;
         this.password = password;
@@ -43,6 +47,14 @@ public class Admin {
     
     public void setIdAdmin(Integer idAdmin) {
         this.idAdmin = idAdmin;
+    }
+
+    public Integer getMatricule() {
+        return matricule;
+    }
+    
+    public void setMatricule(Integer matricule) {
+        this.matricule = matricule;
     }
     
     public String getNomAdmin() {

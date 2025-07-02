@@ -17,6 +17,9 @@ public class Adherent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_adherent")
     private Integer idAdherent;
+
+    @Column(name = "matricule", nullable = false, unique = true)
+    private Integer matricule;
     
     @Column(name = "nom_adherent", length = 50)
     private String nomAdherent;
@@ -34,7 +37,8 @@ public class Adherent {
     // Constructeurs
     public Adherent() {}
 
-    public Adherent(String nomAdherent, String prenomAdherent, String password, Profil profil) {
+    public Adherent(Integer matricule, String nomAdherent, String prenomAdherent, String password, Profil profil) {
+        this.matricule = matricule;
         this.nomAdherent = nomAdherent;
         this.prenomAdherent = prenomAdherent;
         this.password = password;
@@ -48,6 +52,14 @@ public class Adherent {
     
     public void setIdAdherent(Integer idAdherent) {
         this.idAdherent = idAdherent;
+    }
+
+    public Integer getMatricule() {
+        return matricule;
+    }
+    
+    public void setMatricule(Integer matricule) {
+        this.matricule = matricule;
     }
     
     public String getNomAdherent() {
