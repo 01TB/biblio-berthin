@@ -23,4 +23,8 @@ public class AbonnementService {
     public void save(Abonnement abonnement){
         abonnementRepository.save(abonnement);
     }
+
+    public List<Abonnement> findByAdherentId(Integer idAdherent){
+        return abonnementRepository.findByAdherentId(idAdherent);
+    }
 }

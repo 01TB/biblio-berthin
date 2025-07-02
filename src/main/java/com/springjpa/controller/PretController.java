@@ -4,12 +4,15 @@ import com.springjpa.entity.Adherent;
 import com.springjpa.entity.Exemplaire;
 import com.springjpa.service.AdherentService;
 import com.springjpa.service.ExemplaireService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.springjpa.service.TypePretService;
 
 @Controller
 public class PretController {
@@ -20,32 +23,44 @@ public class PretController {
     @Autowired
     private AdherentService adherantService;
 
+    @Autowired
+    private TypePretService typePretService;
+
 
     @GetMapping("/")
     public String index() {
         return "index"; // Redirection vers la page d'accueil
     }
 
+    private void prepareModelPretPage(Model model) {
+        model.addAttribute("exemplaires", exemplaireService.findAll());
+        model.addAttribute("adherants", adherantService.findAll());
+        model.addAttribute("typesPret", typePretService.findAll());
+    }
+
     @GetMapping("/preter")
     public String preter(Model model) {
 
-        model.addAttribute("exemplaires", exemplaireService.findAll());
-        model.addAttribute("adherants", adherantService.findAll());
+        prepareModelPretPage(model);
 
         return "pret";
     }
 
     @PostMapping("/preter")
     public String preterLivre(@RequestParam("adherantId") int adherantId,
+                              @RequestParam("typePretId") int typePretId,
                               @RequestParam("exemplaires") int[] exemplaireIds, Model model) {
+
         Adherent adherant = adherantService.findById(adherantId);
+        // 1. L'adhérant doit être dans la base de donnée
         if (adherant.getIdAdherent() == null) {
             model.addAttribute("error", "Adhérant inexistant.");
+            prepareModelPretPage(model);
             return "pret";
         }
 
         // 2. L'adhérant doit être inscrit (à adapter selon ta logique d'inscription)
-        boolean inscrit = adherantService.isInscri(adherant.getIdAdherent());
+        boolean inscrit = adherantService.isInscrit(adherant.getIdAdherent());
         if (!inscrit) {
             model.addAttribute("error", "Adhérant non inscrit ou inscription inactive.");
             return "pret";
