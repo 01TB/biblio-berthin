@@ -2,6 +2,10 @@ package com.springjpa.entity;
 
 import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.springjpa.service.DureePretService;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,6 +42,9 @@ public class Pret {
     @ManyToOne
     @JoinColumn(name = "id_adherent", nullable = false)
     private Adherent adherent;
+
+    @Autowired
+    private DureePretService dureePretService;
     
     // Constructeurs
     public Pret() {}
@@ -98,5 +105,11 @@ public class Pret {
     
     public void setAdherent(Adherent adherent) {
         this.adherent = adherent;
+    }
+
+    public LocalDateTime getDateFinPret(){
+        Profil profilAdherent = this.getAdherent().getProfil();
+        DureePret dureePretAdherent = dureePretService.findByProfilIdProfil(profilAdherent.getIdProfil());
+        return this.getDateDebut().plusDays(dureePretAdherent.getDuree());
     }
 }

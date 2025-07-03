@@ -6,4 +6,5 @@ import com.springjpa.entity.Adherent;
 
 @Repository
 public interface AdherentRepository extends JpaRepository<Adherent, Integer> {
+    public Adherent findByMatricule(Integer matriculeAdherent);
 }

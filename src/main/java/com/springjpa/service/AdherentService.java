@@ -35,13 +35,16 @@ public class AdherentService {
         adherentRepository.save(adherent);
     }
 
-    public boolean isInscrit(Integer adherentId) {
-        var adherentOpt = adherentRepository.findById(adherentId);
-        if (adherentOpt.isEmpty()) return false;
+    public Adherent findByMatricule(Integer matriculeAdherent){
+        return adherentRepository.findByMatricule(matriculeAdherent);
+    };
 
-        var adherant = adherentOpt.get();
+    public boolean isInscrit(Integer matriculeAdherent) {
+        Adherent adherent = findByMatricule(matriculeAdherent);
+        if (adherent.getIdAdherent() == null) return false;
+
         // Récupérer les abonnements de cet adhérent
-        List<Abonnement> abonnementsAdherent = abonnementService.findByAdherentId(adherentId);
+        List<Abonnement> abonnementsAdherent = abonnementService.findByAdherentId(adherent.getIdAdherent());
         // Si l'adhérent n'a aucun abonnement
         if(abonnementsAdherent.isEmpty()) return false;
 

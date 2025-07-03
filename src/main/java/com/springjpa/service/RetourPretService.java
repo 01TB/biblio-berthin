@@ -23,4 +23,8 @@ public class RetourPretService {
     public void save(RetourPret retourPret){
         retourPretRepository.save(retourPret);
     }
+
+    public RetourPret findByPretIdPret(Integer idPret){
+        return retourPretRepository.findByPretIdPret(idPret);
+    };
 }

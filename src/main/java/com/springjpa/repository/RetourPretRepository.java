@@ -6,4 +6,5 @@ import com.springjpa.entity.RetourPret;
 
 @Repository
 public interface RetourPretRepository extends JpaRepository<RetourPret, Integer> {
+    public RetourPret findByPretIdPret(Integer idPret);
 }

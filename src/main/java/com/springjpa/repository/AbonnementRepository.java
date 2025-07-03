@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface AbonnementRepository extends JpaRepository<Abonnement, Integer> {
     List<Abonnement> findByAdherentId(Integer idAdherent);
+    List<Abonnement> findByAdherentMatricule(Integer adherentMatricule);
 }

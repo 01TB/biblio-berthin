@@ -6,4 +6,5 @@ import com.springjpa.entity.DureePret;
 
 @Repository
 public interface DureePretRepository extends JpaRepository<DureePret, Integer> {
+    public DureePret findByProfilIdProfil(Integer idProfil);
 }

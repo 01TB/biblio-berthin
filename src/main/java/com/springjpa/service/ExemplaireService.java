@@ -1,16 +1,35 @@
 package com.springjpa.service;
 
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.springjpa.entity.Adherent;
+import com.springjpa.entity.DureePret;
 import com.springjpa.entity.Exemplaire;
+import com.springjpa.entity.FinPret;
+import com.springjpa.entity.Pret;
+import com.springjpa.entity.Profil;
+import com.springjpa.entity.RetourPret;
 import com.springjpa.repository.ExemplaireRepository;
 
 @Service
 public class ExemplaireService {
+
     @Autowired
     private ExemplaireRepository exemplaireRepository;
+
+    @Autowired
+    private PretService pretService;
+
+    @Autowired
+    private RetourPretService retourPretService;
+
+    @Autowired
+    private DureePretService dureePretService;
 
     public Exemplaire findById(Integer id){
         return exemplaireRepository.findById(id).get();
@@ -22,5 +41,37 @@ public class ExemplaireService {
 
     public void save(Exemplaire exemplaire){
         exemplaireRepository.save(exemplaire);
+    }
+
+    public List<Exemplaire> findByLivreIdLivre(Integer idLivre){
+        return exemplaireRepository.findByLivreIdLivre(idLivre);
+    };
+
+    public Boolean isExemplaireDisponible(Integer id_exemplaire, LocalDateTime dateDebut, LocalDateTime dateFin) {
+
+        List<Pret> prets = pretService.findByExemplaireIdExemplaire(id_exemplaire);
+    
+        for (Pret pret : prets) {
+            Adherent adherent = pret.getAdherent();
+            Profil profilAdherent = adherent.getProfil();
+            DureePret dureePretAdherent = dureePretService.findByProfilIdProfil(profilAdherent.getIdProfil());
+
+            LocalDateTime dateDebutPret = pret.getDateDebut();
+            LocalDateTime dateFinPretOuRetour = null;
+    
+
+            RetourPret retour = retourPretService.findByPretIdPret(pret.getIdPret());
+            if (retour != null) {
+                dateFinPretOuRetour = retour.getDateRetour();
+            } else {
+                dateFinPretOuRetour = pret.getDateFinPret();
+            }
+        
+            if (PretService.datesSeChevauchent(dateDebut, dateFin, dateDebutPret, dateFinPretOuRetour)) {
+                return false;
+            }
+        }
+    
+        return true;
     }
 }
