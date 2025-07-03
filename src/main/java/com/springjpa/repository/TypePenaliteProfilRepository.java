@@ -6,4 +6,5 @@ import com.springjpa.entity.TypePenaliteProfil;
 
 @Repository
 public interface TypePenaliteProfilRepository extends JpaRepository<TypePenaliteProfil, Integer> {
+    public TypePenaliteProfil findByProfilIdProfil(Integer idProfil);
 }

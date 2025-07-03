@@ -23,4 +23,8 @@ public class TypePenaliteProfilService {
     public void save(TypePenaliteProfil typePenaliteProfil){
         typePenaliteProfilRepository.save(typePenaliteProfil);
     }
+
+    public TypePenaliteProfil findByProfilIdProfil(Integer idProfil){
+        return typePenaliteProfilRepository.findByProfilIdProfil(idProfil);
+    };
 }

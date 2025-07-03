@@ -6,4 +6,5 @@ import com.springjpa.entity.QuotaTypePret;
 
 @Repository
 public interface QuotaTypePretRepository extends JpaRepository<QuotaTypePret, Integer> {
+    public QuotaTypePret findByProfilIdProfilAndTypePretIdTypePret(Integer idProfil, Integer idTypePret);
 }

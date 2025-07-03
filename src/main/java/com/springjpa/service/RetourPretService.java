@@ -27,4 +27,8 @@ public class RetourPretService {
     public RetourPret findByPretIdPret(Integer idPret){
         return retourPretRepository.findByPretIdPret(idPret);
     };
+
+    public boolean existsByPretIdPret(Integer idPret){
+        return retourPretRepository.existsByPretIdPret(idPret);
+    };
 }

@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.springjpa.entity.Adherent;
 import com.springjpa.entity.DureePret;
 import com.springjpa.entity.Exemplaire;
-import com.springjpa.entity.FinPret;
 import com.springjpa.entity.Pret;
 import com.springjpa.entity.Profil;
+import com.springjpa.entity.Reservation;
 import com.springjpa.entity.RetourPret;
 import com.springjpa.repository.ExemplaireRepository;
 
@@ -27,6 +27,9 @@ public class ExemplaireService {
 
     @Autowired
     private RetourPretService retourPretService;
+
+    @Autowired
+    private ReservationService reservationService;
 
     @Autowired
     private DureePretService dureePretService;
@@ -47,14 +50,15 @@ public class ExemplaireService {
         return exemplaireRepository.findByLivreIdLivre(idLivre);
     };
 
-    public Boolean isExemplaireDisponible(Integer id_exemplaire, LocalDateTime dateDebut, LocalDateTime dateFin) {
+    public void isExemplaireDisponible(Integer idExemplaire, LocalDateTime dateDebut, LocalDateTime dateFin) throws Exception{
 
-        List<Pret> prets = pretService.findByExemplaireIdExemplaire(id_exemplaire);
+        // Check des prêts
+        List<Pret> prets = pretService.findByExemplaireIdExemplaire(idExemplaire);
     
         for (Pret pret : prets) {
-            Adherent adherent = pret.getAdherent();
-            Profil profilAdherent = adherent.getProfil();
-            DureePret dureePretAdherent = dureePretService.findByProfilIdProfil(profilAdherent.getIdProfil());
+            // Adherent adherent = pret.getAdherent();
+            // Profil profilAdherent = adherent.getProfil();
+            // DureePret dureePretAdherent = dureePretService.findByProfilIdProfil(profilAdherent.getIdProfil());
 
             LocalDateTime dateDebutPret = pret.getDateDebut();
             LocalDateTime dateFinPretOuRetour = null;
@@ -68,10 +72,17 @@ public class ExemplaireService {
             }
         
             if (PretService.datesSeChevauchent(dateDebut, dateFin, dateDebutPret, dateFinPretOuRetour)) {
-                return false;
+                throw new Exception("Exemplaire n°" + idExemplaire + " encore prêté.");
             }
         }
-    
-        return true;
+        
+        // Check des réservations
+        List<Reservation> reservations = reservationService.findByExemplaireIdExemplaire(idExemplaire);
+
+        for (Reservation reservation: reservations) {
+            if (PretService.datesSeChevauchent(dateDebut, dateFin, reservation.getDateReservation(), reservation.getDateExpiration())) {
+                throw new Exception("Exemplaire n°" + idExemplaire + " déjà réservé.");
+            }
+        }
     }
 }

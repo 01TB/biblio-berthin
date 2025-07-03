@@ -9,4 +9,5 @@ import com.springjpa.entity.Pret;
 @Repository
 public interface PretRepository extends JpaRepository<Pret, Integer> {
     public List<Pret> findByExemplaireIdExemplaire(Integer idExemplaire);
+    public List<Pret> findByAdherentIdAdherent(Integer idAdherernt);
 }

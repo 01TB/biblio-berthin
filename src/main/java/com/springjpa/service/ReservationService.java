@@ -23,4 +23,11 @@ public class ReservationService {
     public void save(Reservation reservation){
         reservationRepository.save(reservation);
     }
+
+    public List<Reservation> findByExemplaireIdExemplaire(Integer idExemplaire){
+        return reservationRepository.findByExemplaireIdExemplaire(idExemplaire);
+    }
+    public List<Reservation> findByAdherentMatricule(Integer matriculeAdherent){
+        return reservationRepository.findByAdherentMatricule(matriculeAdherent);
+    }
 }

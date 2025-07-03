@@ -56,7 +56,15 @@ public class Livre {
         inverseJoinColumns = @JoinColumn(name = "id_categorie")
     )
     private Set<Categorie> categories;
-    
+
+    @ManyToMany
+    @JoinTable(
+        name = "accessibilite_profil_livre",
+        joinColumns = @JoinColumn(name = "id_livre"),
+        inverseJoinColumns = @JoinColumn(name = "id_profil")
+    )
+    private Set<Profil> profils;
+
     // Constructeurs
     public Livre() {}
     
@@ -151,5 +159,17 @@ public class Livre {
     
     public void setCategories(Set<Categorie> categories) {
         this.categories = categories;
+    }
+
+    public Set<Profil> getProfils() {
+        return profils;
+    }
+
+    public void setProfils(Set<Profil> profils) {
+        this.profils = profils;
+    }
+
+    public boolean peutPreter(Profil profil) {
+        return getProfils().contains(profil);
     }
 }
