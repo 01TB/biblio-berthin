@@ -2,49 +2,48 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="
-           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-           http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
-           http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
-           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/data/jpa
+                           http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-    <!-- Scan for annotated components (e.g., @Service, @Repository) -->
-    <context:component-scan base-package="com.springjpa" />
-    <jpa:repositories base-package="com.springjpa.repository" />
-    <jpa:services base-package="com.springjpa.service" />
+    <!-- Component scanning for services -->
+    <context:component-scan base-package="com.springjpa.service" />
 
-    <!-- DataSource Bean -->
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <!-- DataSource configuration for MySQL -->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/biblio" />
-        <property name="username" value="root" />
-        <property name="password" value="" />
+        <property name="url" value="jdbc:mysql://localhost:3306/biblio_spring?useSSL=false&serverTimezone=UTC" />
+        <property name="username" value="root" /> <!-- Replace with your MySQL username -->
+        <property name="password" value="" /> <!-- Replace with your MySQL password -->
     </bean>
 
-    <!-- JPA EntityManagerFactory -->
+    <!-- EntityManagerFactory configuration -->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="packagesToScan" value="com.springjpa.entity" />
         <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="showSql" value="true" />
-                <property name="generateDdl" value="true" />
-                <property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
-            </bean>
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
         </property>
-        
-        <property name="entityManagerFactoryInterface" value="jakarta.persistence.EntityManagerFactory"/>
-    </bean> 
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <!-- Disable automatic schema initialization to avoid data.sql usage -->
+                <prop key="spring.jpa.defer-datasource-initialization">false</prop>
+            </props>
+        </property>
+    </bean>
 
     <!-- Transaction Manager -->
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
 
-    <!-- Enable annotation-driven transaction management -->
-    <tx:annotation-driven transaction-manager="transactionManager" />
+    <!-- Enable JPA repositories -->
+    <jpa:repositories base-package="com.springjpa.repository" />
 </beans>

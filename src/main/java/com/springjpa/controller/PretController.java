@@ -1,17 +1,5 @@
 package com.springjpa.controller;
 
-import com.springjpa.entity.Adherent;
-import com.springjpa.entity.DureePret;
-import com.springjpa.entity.Exemplaire;
-import com.springjpa.entity.Livre;
-import com.springjpa.entity.Pret;
-import com.springjpa.entity.Profil;
-import com.springjpa.service.AdherentService;
-import com.springjpa.service.AdminService;
-import com.springjpa.service.ExemplaireService;
-import com.springjpa.service.QuotaTypePretService;
-import com.springjpa.service.LivreService;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,9 +10,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.springjpa.entity.Adherent;
+import com.springjpa.entity.DureePret;
+import com.springjpa.entity.Exemplaire;
+import com.springjpa.entity.Livre;
+import com.springjpa.entity.Pret;
+import com.springjpa.entity.Profil;
+import com.springjpa.service.AdherentService;
+import com.springjpa.service.AdminService;
 import com.springjpa.service.DureePretService;
+import com.springjpa.service.ExemplaireService;
+import com.springjpa.service.LivreService;
 import com.springjpa.service.PenaliteService;
 import com.springjpa.service.PretService;
+import com.springjpa.service.QuotaTypePretService;
 import com.springjpa.service.TypePretService;
 
 @Controller
@@ -38,9 +37,6 @@ public class PretController {
 
     @Autowired
     private AdherentService adherentService;
-
-    @Autowired
-    private QuotaTypePretService qutoTypePret;
 
     @Autowired
     private TypePretService typePretService;
