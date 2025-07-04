@@ -57,7 +57,7 @@ public class PretController {
     private PenaliteService penaliteService;
 
 
-    @GetMapping("/pret")
+    @GetMapping("admin/pret")
     public String index() {
         return "home"; // Redirection vers la page d'accueil
     }
@@ -68,7 +68,7 @@ public class PretController {
         model.addAttribute("typesPret", typePretService.findAll());
     }
 
-    @GetMapping("/pret/preter")
+    @GetMapping("admin/pret")
     public String preter(Model model) {
 
         prepareModelPretPage(model);
@@ -76,7 +76,7 @@ public class PretController {
         return "admin/pret";
     }
 
-    @PostMapping("/pret/preter")
+    @PostMapping("admin/pret")
     public String preterLivre(@RequestParam("matriculeAdherent") int matriculeAdherent,
                               @RequestParam("typePretId") int typePretId,
                               @RequestParam("livreId") int livreId, Model model) {

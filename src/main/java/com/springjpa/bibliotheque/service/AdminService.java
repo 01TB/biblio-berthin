@@ -27,4 +27,8 @@ public class AdminService {
     public Admin findByMatriculeAndPassword(String matriculeAdmin, String password){
         return adminRepository.findByMatriculeAndPassword(matriculeAdmin,password);
     };
+
+    public boolean isAdmin(String matriculeAdmin, String password){
+        return findByMatriculeAndPassword(matriculeAdmin, password)!=null;
+    }
 }
