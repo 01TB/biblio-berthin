@@ -57,7 +57,7 @@ public class PretController {
     private PenaliteService penaliteService;
 
 
-    @GetMapping("/")
+    @GetMapping("/pret")
     public String index() {
         return "home"; // Redirection vers la page d'accueil
     }
@@ -68,15 +68,15 @@ public class PretController {
         model.addAttribute("typesPret", typePretService.findAll());
     }
 
-    @GetMapping("/preter")
+    @GetMapping("/pret/preter")
     public String preter(Model model) {
 
         prepareModelPretPage(model);
 
-        return "pret";
+        return "admin/pret";
     }
 
-    @PostMapping("/preter")
+    @PostMapping("/pret/preter")
     public String preterLivre(@RequestParam("matriculeAdherent") int matriculeAdherent,
                               @RequestParam("typePretId") int typePretId,
                               @RequestParam("livreId") int livreId, Model model) {
@@ -90,7 +90,7 @@ public class PretController {
         if (adherent == null) {
             model.addAttribute("message", "Adhérant inexistant.");
             prepareModelPretPage(model);
-            return "pret";
+            return "admin/pret";
         }
 
         // 2. L'adhérant doit être inscrit (à adapter selon ta logique d'inscription)
@@ -98,7 +98,7 @@ public class PretController {
         if (!inscrit) {
             prepareModelPretPage(model);
             model.addAttribute("message", "Adhérant non inscrit ou inscription inactive.");
-            return "pret";
+            return "admin/pret";
         }
 
         for (Exemplaire exemplaire : exemplaires) {
@@ -107,7 +107,7 @@ public class PretController {
             if (exemplaireOpt.getIdExemplaire() == null) {
                 model.addAttribute("message", "Exemplaire n°" + exemplaire.getIdExemplaire() + " inexistant.");
                 prepareModelPretPage(model);
-                return "pret";
+                return "admin/pret";
             }
 
             Profil profil = adherent.getProfil();
@@ -119,7 +119,7 @@ public class PretController {
             } catch (Exception e) {
                 model.addAttribute("message", e.getMessage());
                 prepareModelPretPage(model);
-                return "pret";
+                return "admin/pret";
             }
         }
 
@@ -128,7 +128,7 @@ public class PretController {
         if (penalise) {
             model.addAttribute("message", "Adhérant pénalisé, prêt impossible.");
             prepareModelPretPage(model);
-            return "pret";
+            return "admin/pret";
         }
 
         // 6. Vérifier que l'adhérant ne dépasse pas le quota pour le type de prêt
@@ -137,7 +137,7 @@ public class PretController {
         if (depasseQuota) {
             model.addAttribute("message", "Quota de prêt dépassé." + depasseQuota);
             prepareModelPretPage(model);
-            return "pret";
+            return "admin/pret";
         }
 
         // 7. L'adhérant peut-il prêter ce livre (ex: restrictions sur certains livres)
@@ -146,7 +146,7 @@ public class PretController {
         if (!peutPreter) {
             model.addAttribute("message", "Vous ne pouvez pas emprunter ce livre a cause de votre age ou du type de votre profil");
             prepareModelPretPage(model);
-            return "pret";
+            return "admin/pret";
         }
 
 
@@ -168,7 +168,7 @@ public class PretController {
         
         
         // Redirection vers la page de confirmation ou d'accueil après le prêt
-        return "pret";
+        return "admin/pret";
         
     }
 }

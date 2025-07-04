@@ -9,7 +9,7 @@
 </head>
 <body>
     <h1>Prêter un Livre</h1>
-    <form action="/preter" method="post">
+    <form action="/pret/preter" method="post">
         <label for="matriculeAdherent">Matricule de l'adhérant :</label>
         <input id="matriculeAdherent" name="matriculeAdherent" required>
         <br/>

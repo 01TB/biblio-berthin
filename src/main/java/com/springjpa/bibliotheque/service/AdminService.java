@@ -23,4 +23,8 @@ public class AdminService {
     public void save(Admin admin){
         adminRepository.save(admin);
     }
+
+    public Admin findByMatriculeAndPassword(String matriculeAdmin, String password){
+        return adminRepository.findByMatriculeAndPassword(matriculeAdmin,password);
+    };
 }

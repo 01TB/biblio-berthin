@@ -6,4 +6,5 @@ import com.springjpa.bibliotheque.entity.Admin;
 
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, Integer> {
+    public Admin findByMatriculeAndPassword(String matriculeAdmin, String password);
 }
