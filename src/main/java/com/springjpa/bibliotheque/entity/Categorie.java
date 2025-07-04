@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-
 @Entity
 @Table(name = "categorie")
 public class Categorie {
@@ -20,14 +19,12 @@ public class Categorie {
     @Column(name = "nom_categorie", nullable = false, length = 255)
     private String nomCategorie;
     
-    // Constructeurs
     public Categorie() {}
     
     public Categorie(String nomCategorie) {
         this.nomCategorie = nomCategorie;
     }
     
-    // Getters et Setters
     public Integer getIdCategorie() {
         return idCategorie;
     }

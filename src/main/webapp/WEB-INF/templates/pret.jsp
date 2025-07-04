@@ -10,27 +10,30 @@
 <body>
     <h1>Prêter un Livre</h1>
     <form action="/preter" method="post">
-        <label for="adherantId">ID de l'adh&eacute;rant :</label>
-        <input list="adherant-list" id="adherantId" name="adherantId" required autocomplete="off">
-        <datalist id="adherant-list">
-            <c:forEach var="ad" items="${adherants}">
-                <option value="${ad.idAdherant}">${ad.nomAdherant} ${ad.prenomAdherant}</option>
+        <label for="matriculeAdherent">Matricule de l'adhérant :</label>
+        <input id="matriculeAdherent" name="matriculeAdherent" required>
+        <br/>
+        <label for="typePretId">Type de prêt</label>
+        <select name="typePretId" id="typePretId" required>
+            <c:forEach var="type" items="${typesPret}">
+                <option value="${type.getIdTypePret()}">${type.getType()}</option>
             </c:forEach>
-        </datalist>
-        <br><br>
-        <label for="exemplaires">S&eacute;lectionnez les exemplaires à preter :</label>
-        <select id="exemplaires" name="exemplaires" multiple size="5" required>
-            <c:forEach var="ex" items="${exemplaires}">
-                <option value="${ex.idExemplaire}">
-                    Exemplaire ${ex.idExemplaire}
-                    <c:if test="${not empty ex.livre}">
-                        - Livre: ${ex.livre.titre}
-                    </c:if>
+        </select>
+
+        <label for="livreId">Sélectionner le livre que vous voulez emprunter : </label>
+        <select id="livreId" name="livreId" required>
+            <c:forEach var="livre" items="${livres}">
+                <option value="${livre.getIdLivre()}">
+                    ${livre.getTitre()} - ${livre.getIsbn()}
                 </option>
             </c:forEach>
         </select>
         <br><br>
         <button type="submit">Valider le pret</button>
     </form>
+
+    <c:if test="${message != null}">
+        <p>${message}</p>
+    </c:if>
 </body>
 </html>

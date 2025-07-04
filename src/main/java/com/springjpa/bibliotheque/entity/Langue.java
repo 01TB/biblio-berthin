@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-
 @Entity
 @Table(name = "langue")
 public class Langue {
@@ -20,14 +19,12 @@ public class Langue {
     @Column(name = "langue", nullable = false, length = 50)
     private String langue;
     
-    // Constructeurs
     public Langue() {}
     
     public Langue(String langue) {
         this.langue = langue;
     }
     
-    // Getters et Setters
     public Integer getIdLangue() {
         return idLangue;
     }
@@ -36,11 +33,11 @@ public class Langue {
         this.idLangue = idLangue;
     }
     
-    public String getNomLangue() {
+    public String getLangue() {
         return langue;
     }
     
-    public void setNomLangue(String langue) {
+    public void setLangue(String langue) {
         this.langue = langue;
     }
 }

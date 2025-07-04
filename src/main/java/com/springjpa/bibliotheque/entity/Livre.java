@@ -1,7 +1,9 @@
 package com.springjpa.bibliotheque.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -49,23 +51,22 @@ public class Livre {
     @JoinColumn(name = "id_langue", nullable = false)
     private Langue langue;
     
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
         name = "categorie_livre",
-        joinColumns = @JoinColumn(name = "id_livre"),
-        inverseJoinColumns = @JoinColumn(name = "id_categorie")
+        joinColumns = @JoinColumn(name = "id_livre", referencedColumnName = "id_livre"),
+        inverseJoinColumns = @JoinColumn(name = "id_categorie", referencedColumnName = "id_categorie")
     )
-    private Set<Categorie> categories;
+    private Set<Categorie> categories = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
         name = "accessibilite_profil_livre",
-        joinColumns = @JoinColumn(name = "id_livre"),
-        inverseJoinColumns = @JoinColumn(name = "id_profil")
+        joinColumns = @JoinColumn(name = "id_livre", referencedColumnName = "id_livre"),
+        inverseJoinColumns = @JoinColumn(name = "id_profil", referencedColumnName = "id_profil")
     )
-    private Set<Profil> profils;
+    private Set<Profil> profils = new HashSet<>();
 
-    // Constructeurs
     public Livre() {}
     
     public Livre(String titre, String isbn, Integer anneePublication, String synopsis, 
@@ -80,7 +81,6 @@ public class Livre {
         this.langue = langue;
     }
     
-    // Getters et Setters
     public Integer getIdLivre() {
         return idLivre;
     }
@@ -170,6 +170,6 @@ public class Livre {
     }
 
     public boolean peutPreter(Profil profil) {
-        return getProfils().contains(profil);
+        return profils.contains(profil);
     }
 }

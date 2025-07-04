@@ -87,8 +87,8 @@ public class PretController {
         Exemplaire exemplaireOpt =  null;
     
         // 1. L'adhérant doit être dans la base de donnée
-        if (adherent.getIdAdherent() == null) {
-            model.addAttribute("error", "Adhérant inexistant.");
+        if (adherent == null) {
+            model.addAttribute("message", "Adhérant inexistant.");
             prepareModelPretPage(model);
             return "pret";
         }
@@ -96,7 +96,8 @@ public class PretController {
         // 2. L'adhérant doit être inscrit (à adapter selon ta logique d'inscription)
         boolean inscrit = adherentService.isInscrit(adherent.getIdAdherent());
         if (!inscrit) {
-            model.addAttribute("error", "Adhérant non inscrit ou inscription inactive.");
+            prepareModelPretPage(model);
+            model.addAttribute("message", "Adhérant non inscrit ou inscription inactive.");
             return "pret";
         }
 
@@ -156,10 +157,10 @@ public class PretController {
             exemplaireOpt, // Exemplaire (le dernier exemplaire vérifié)
             adherent // Adhérant
         );
-        
 
         if (exemplaireOpt != null) {
             pretService.save(pret);
+            prepareModelPretPage(model);
             model.addAttribute("message", "Prêt validé et inséré");
         }
 

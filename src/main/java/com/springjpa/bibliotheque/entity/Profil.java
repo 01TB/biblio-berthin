@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-
 @Entity
 @Table(name = "profil")
 public class Profil {
@@ -26,7 +25,6 @@ public class Profil {
     @Column(name = "quota_prolongation")
     private Integer quotaProlongation;
     
-    // Constructeurs
     public Profil() {}
     
     public Profil(String nomProfil, Integer quotaReservation, Integer quotaProlongation) {
@@ -35,7 +33,6 @@ public class Profil {
         this.quotaProlongation = quotaProlongation;
     }
     
-    // Getters et Setters
     public Integer getIdProfil() {
         return idProfil;
     }
@@ -51,7 +48,6 @@ public class Profil {
     public void setNomProfil(String nomProfil) {
         this.nomProfil = nomProfil;
     }
-    
     
     public Integer getQuotaReservation() {
         return quotaReservation;

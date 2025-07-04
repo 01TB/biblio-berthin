@@ -1,11 +1,10 @@
 package com.springjpa.bibliotheque.service;
 
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.springjpa.bibliotheque.entity.Abonnement;
 import com.springjpa.bibliotheque.entity.Adherent;
@@ -39,10 +38,10 @@ public class AdherentService {
 
     public boolean isInscrit(Integer matriculeAdherent) {
         Adherent adherent = findByMatricule(matriculeAdherent);
-        if (adherent.getIdAdherent() == null) return false;
+        if (adherent == null) return false;
 
         // Récupérer les abonnements de cet adhérent
-        List<Abonnement> abonnementsAdherent = abonnementRepository.findByIdAbonnement(adherent.getIdAdherent());
+        List<Abonnement> abonnementsAdherent = abonnementRepository.findByAdherentMatricule(adherent.getIdAdherent());
         // Si l'adhérent n'a aucun abonnement
         if(abonnementsAdherent.isEmpty()) return false;
 
