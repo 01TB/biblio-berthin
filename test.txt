@@ -1,411 +1,366 @@
-D:.
-│   .gitattributes
-│   .gitignore
-│   conception-biblio.jpg
-│   deploy.bat
-│   generate-repo.bat
-│   generate-service.bat
-│   LoopingImage.jpg
-│   Mr Naina Biblio.pdf
-│   pom.xml
-│   scheme.lo1
-│   scheme.loo
-│   test.txt
-│   
-├───.vscode
-│       settings.json
-│       
-├───src
-│   ├───main
-│   │   ├───java
-│   │   │   └───com
-│   │   │       └───springjpa
-│   │   │           ├───controller
-│   │   │           │       PretController.java
-│   │   │           │       
-│   │   │           ├───entity
-│   │   │           │       Abonnement.java
-│   │   │           │       Adherent.java
-│   │   │           │       Admin.java
-│   │   │           │       Auteur.java
-│   │   │           │       Categorie.java
-│   │   │           │       DureePret.java
-│   │   │           │       DureeReservation.java
-│   │   │           │       Editeur.java
-│   │   │           │       Exemplaire.java
-│   │   │           │       InscriptionProfil.java
-│   │   │           │       JourFerie.java
-│   │   │           │       Langue.java
-│   │   │           │       Livre.java
-│   │   │           │       Penalite.java
-│   │   │           │       Pret.java
-│   │   │           │       Profil.java
-│   │   │           │       ProlongationPret.java
-│   │   │           │       QuotaTypePret.java
-│   │   │           │       QuotaTypePretId.java
-│   │   │           │       Reservation.java
-│   │   │           │       RetourPret.java
-│   │   │           │       StatutReservation.java
-│   │   │           │       TypePenaliteProfil.java
-│   │   │           │       TypePret.java
-│   │   │           │
-│   │   │           ├───main
-│   │   │           │       DemoApplication.java
-│   │   │           │
-│   │   │           ├───repository
-│   │   │           │       AbonnementRepository.java
-│   │   │           │       AdherentRepository.java
-│   │   │           │       AdminRepository.java
-│   │   │           │       AuteurRepository.java
-│   │   │           │       CategorieRepository.java
-│   │   │           │       DureePretRepository.java
-│   │   │           │       DureeReservationRepository.java
-│   │   │           │       EditeurRepository.java
-│   │   │           │       ExemplaireRepository.java
-│   │   │           │       InscriptionProfilRepository.java
-│   │   │           │       JourFerieRepository.java
-│   │   │           │       LangueRepository.java
-│   │   │           │       LivreRepository.java
-│   │   │           │       PenaliteRepository.java
-│   │   │           │       PretRepository.java
-│   │   │           │       ProfilRepository.java
-│   │   │           │       ProlongationPretRepository.java
-│   │   │           │       QuotaTypePretIdRepository.java
-│   │   │           │       QuotaTypePretRepository.java
-│   │   │           │       ReservationRepository.java
-│   │   │           │       RetourPretRepository.java
-│   │   │           │       StatutReservationRepository.java
-│   │   │           │       TypePenaliteProfilRepository.java
-│   │   │           │       TypePretRepository.java
-│   │   │           │
-│   │   │           └───service
-│   │   │                   AbonnementService.java
-│   │   │                   AdherentService.java
-│   │   │                   AdminService.java
-│   │   │                   AuteurService.java
-│   │   │                   CategorieService.java
-│   │   │                   DureePretService.java
-│   │   │                   DureeReservationService.java
-│   │   │                   EditeurService.java
-│   │   │                   ExemplaireService.java
-│   │   │                   InscriptionProfilService.java
-│   │   │                   JourFerieService.java
-│   │   │                   LangueService.java
-│   │   │                   LivreService.java
-│   │   │                   PenaliteService.java
-│   │   │                   PretService.java
-│   │   │                   ProfilService.java
-│   │   │                   ProlongationPretService.java
-│   │   │                   QuotaTypePretService.java
-│   │   │                   ReservationService.java
-│   │   │                   RetourPretService.java
-│   │   │                   StatutReservationService.java
-│   │   │                   TypePenaliteProfilService.java
-│   │   │                   TypePretService.java
-│   │   │
-│   │   └───webapp
-│   │       └───WEB-INF
-│   │           │   web.xml
-│   │           │
-│   │           ├───config
-│   │           │       applicationContext.xml
-│   │           │       dispatcher-servlet.xml
-│   │           │
-│   │           └───views
-│   │                   index.jsp
-│   │                   pret.jsp
-│   │
-│   ├───sql
-│   │   ├───data
-│   │   │       data-init.sql
-│   │   │       data.sql
-│   │   │
-│   │   └───tables
-│   │           table.sql
-│   │
-│   └───test
-│       └───java
-└───target
-    │   biblio-spring-1.0.war
-    │   biblio-spring-1.0.war.original
-    │
-    ├───biblio-spring-1.0
-    │   ├───META-INF
-    │   └───WEB-INF
-    │       │   web.xml
-    │       │
-    │       ├───classes
-    │       │   │   application.properties
-    │       │   │
-    │       │   └───com
-    │       │       └───springjpa
-    │       │           ├───controller
-    │       │           │       PretController.class
-    │       │           │
-    │       │           ├───entity
-    │       │           │       Abonnement.class
-    │       │           │       Adherent.class
-    │       │           │       Admin.class
-    │       │           │       Auteur.class
-    │       │           │       Categorie.class
-    │       │           │       DureePret.class
-    │       │           │       DureeReservation.class
-    │       │           │       Editeur.class
-    │       │           │       Exemplaire.class
-    │       │           │       InscriptionProfil.class
-    │       │           │       JourFerie.class
-    │       │           │       Langue.class
-    │       │           │       Livre.class
-    │       │           │       Penalite.class
-    │       │           │       Pret.class
-    │       │           │       Profil.class
-    │       │           │       ProlongationPret.class
-    │       │           │       QuotaTypePret.class
-    │       │           │       QuotaTypePretId.class
-    │       │           │       Reservation.class
-    │       │           │       RetourPret.class
-    │       │           │       StatutReservation.class
-    │       │           │       TypePenaliteProfil.class
-    │       │           │       TypePret.class
-    │       │           │
-    │       │           ├───main
-    │       │           │       DemoApplication.class
-    │       │           │
-    │       │           ├───repository
-    │       │           │       AbonnementRepository.class
-    │       │           │       AdherentRepository.class
-    │       │           │       AdminRepository.class
-    │       │           │       AuteurRepository.class
-    │       │           │       CategorieRepository.class
-    │       │           │       DureePretRepository.class
-    │       │           │       DureeReservationRepository.class
-    │       │           │       EditeurRepository.class
-    │       │           │       ExemplaireRepository.class
-    │       │           │       InscriptionProfilRepository.class
-    │       │           │       JourFerieRepository.class
-    │       │           │       LangueRepository.class
-    │       │           │       LivreRepository.class
-    │       │           │       PenaliteRepository.class
-    │       │           │       PretRepository.class
-    │       │           │       ProfilRepository.class
-    │       │           │       ProlongationPretRepository.class
-    │       │           │       QuotaTypePretIdRepository.class
-    │       │           │       QuotaTypePretRepository.class
-    │       │           │       ReservationRepository.class
-    │       │           │       RetourPretRepository.class
-    │       │           │       StatutReservationRepository.class
-    │       │           │       TypePenaliteProfilRepository.class
-    │       │           │       TypePretRepository.class
-    │       │           │
-    │       │           └───service
-    │       │                   AbonnementService.class
-    │       │                   AdherentService.class
-    │       │                   AdminService.class
-    │       │                   AuteurService.class
-    │       │                   CategorieService.class
-    │       │                   DureePretService.class
-    │       │                   DureeReservationService.class
-    │       │                   EditeurService.class
-    │       │                   ExemplaireService.class
-    │       │                   InscriptionProfilService.class
-    │       │                   JourFerieService.class
-    │       │                   LangueService.class
-    │       │                   LivreService.class
-    │       │                   PenaliteService.class
-    │       │                   PretService.class
-    │       │                   ProfilService.class
-    │       │                   ProlongationPretService.class
-    │       │                   QuotaTypePretService.class
-    │       │                   ReservationService.class
-    │       │                   RetourPretService.class
-    │       │                   StatutReservationService.class
-    │       │                   TypePenaliteProfilService.class
-    │       │                   TypePretService.class
-    │       │
-    │       ├───config
-    │       │       applicationContext.xml
-    │       │       dispatcher-servlet.xml
-    │       │
-    │       ├───lib
-    │       │       angus-activation-1.0.0.jar
-    │       │       antlr4-runtime-4.10.1.jar
-    │       │       aspectjweaver-1.9.9.1.jar
-    │       │       byte-buddy-1.12.19.jar
-    │       │       classmate-1.5.1.jar
-    │       │       commons-dbcp2-2.9.0.jar
-    │       │       commons-pool2-2.11.1.jar
-    │       │       ecj-3.18.0.jar
-    │       │       hibernate-commons-annotations-6.0.2.Final.jar
-    │       │       hibernate-core-6.1.5.Final.jar
-    │       │       HikariCP-5.0.1.jar
-    │       │       istack-commons-runtime-4.1.1.jar
-    │       │       jackson-annotations-2.14.1.jar
-    │       │       jackson-core-2.14.1.jar
-    │       │       jackson-databind-2.14.1.jar
-    │       │       jackson-datatype-jdk8-2.14.1.jar
-    │       │       jackson-datatype-jsr310-2.14.1.jar
-    │       │       jackson-module-parameter-names-2.14.1.jar
-    │       │       jakarta.activation-api-2.1.0.jar
-    │       │       jakarta.annotation-api-2.1.1.jar
-    │       │       jakarta.el-api-5.0.0.jar
-    │       │       jakarta.inject-api-2.0.0.jar
-    │       │       jakarta.persistence-api-3.1.0.jar
-    │       │       jakarta.servlet.jsp.jstl-2.0.0.jar
-    │       │       jakarta.servlet.jsp.jstl-api-3.0.0.jar
-    │       │       jakarta.transaction-api-2.0.1.jar
-    │       │       jakarta.xml.bind-api-4.0.0.jar
-    │       │       jandex-2.4.2.Final.jar
-    │       │       jaxb-core-4.0.1.jar
-    │       │       jaxb-runtime-4.0.1.jar
-    │       │       jboss-logging-3.5.0.Final.jar
-    │       │       jul-to-slf4j-2.0.4.jar
-    │       │       log4j-api-2.19.0.jar
-    │       │       log4j-to-slf4j-2.19.0.jar
-    │       │       logback-classic-1.4.5.jar
-    │       │       logback-core-1.4.5.jar
-    │       │       micrometer-commons-1.10.2.jar
-    │       │       micrometer-observation-1.10.2.jar
-    │       │       mysql-connector-j-8.0.33.jar
-    │       │       slf4j-api-2.0.4.jar
-    │       │       snakeyaml-1.33.jar
-    │       │       spring-aop-6.0.2.jar
-    │       │       spring-aspects-6.0.2.jar
-    │       │       spring-beans-6.0.2.jar
-    │       │       spring-boot-3.0.0.jar
-    │       │       spring-boot-autoconfigure-3.0.0.jar
-    │       │       spring-boot-starter-3.0.0.jar
-    │       │       spring-boot-starter-aop-3.0.0.jar
-    │       │       spring-boot-starter-data-jpa-3.0.0.jar
-    │       │       spring-boot-starter-jdbc-3.0.0.jar
-    │       │       spring-boot-starter-json-3.0.0.jar
-    │       │       spring-boot-starter-logging-3.0.0.jar
-    │       │       spring-boot-starter-tomcat-3.0.0.jar
-    │       │       spring-boot-starter-web-3.0.0.jar
-    │       │       spring-context-6.0.2.jar
-    │       │       spring-core-6.0.2.jar
-    │       │       spring-data-commons-3.0.0.jar
-    │       │       spring-data-jpa-3.0.0.jar
-    │       │       spring-expression-6.0.2.jar
-    │       │       spring-jcl-6.0.2.jar
-    │       │       spring-jdbc-6.0.2.jar
-    │       │       spring-orm-6.0.2.jar
-    │       │       spring-tx-6.0.2.jar
-    │       │       spring-web-6.0.2.jar
-    │       │       spring-webmvc-6.0.2.jar
-    │       │       tomcat-annotations-api-10.1.1.jar
-    │       │       tomcat-embed-core-10.1.1.jar
-    │       │       tomcat-embed-el-10.1.1.jar
-    │       │       tomcat-embed-jasper-10.1.1.jar
-    │       │       tomcat-embed-websocket-10.1.1.jar
-    │       │       txw2-4.0.1.jar
-    │       │
-    │       └───views
-    │               index.jsp
-    │               pret.jsp
-    │
-    ├───classes
-    │   └───com
-    │       └───springjpa
-    │           ├───controller
-    │           │       PretController.class
-    │           │
-    │           ├───entity
-    │           │       Abonnement.class
-    │           │       Adherent.class
-    │           │       Admin.class
-    │           │       Auteur.class
-    │           │       Categorie.class
-    │           │       DureePret.class
-    │           │       DureeReservation.class
-    │           │       Editeur.class
-    │           │       Exemplaire.class
-    │           │       InscriptionProfil.class
-    │           │       JourFerie.class
-    │           │       Langue.class
-    │           │       Livre.class
-    │           │       Penalite.class
-    │           │       Pret.class
-    │           │       Profil.class
-    │           │       ProlongationPret.class
-    │           │       QuotaTypePret.class
-    │           │       QuotaTypePretId.class
-    │           │       Reservation.class
-    │           │       RetourPret.class
-    │           │       StatutReservation.class
-    │           │       TypePenaliteProfil.class
-    │           │       TypePret.class
-    │           │
-    │           ├───main
-    │           │       DemoApplication.class
-    │           │
-    │           ├───repository
-    │           │       AbonnementRepository.class
-    │           │       AdherentRepository.class
-    │           │       AdminRepository.class
-    │           │       AuteurRepository.class
-    │           │       CategorieRepository.class
-    │           │       DureePretRepository.class
-    │           │       DureeReservationRepository.class
-    │           │       EditeurRepository.class
-    │           │       ExemplaireRepository.class
-    │           │       InscriptionProfilRepository.class
-    │           │       JourFerieRepository.class
-    │           │       LangueRepository.class
-    │           │       LivreRepository.class
-    │           │       PenaliteRepository.class
-    │           │       PretRepository.class
-    │           │       ProfilRepository.class
-    │           │       ProlongationPretRepository.class
-    │           │       QuotaTypePretIdRepository.class
-    │           │       QuotaTypePretRepository.class
-    │           │       ReservationRepository.class
-    │           │       RetourPretRepository.class
-    │           │       StatutReservationRepository.class
-    │           │       TypePenaliteProfilRepository.class
-    │           │       TypePretRepository.class
-    │           │
-    │           └───service
-    │                   AbonnementService.class
-    │                   AdherentService.class
-    │                   AdminService.class
-    │                   AuteurService.class
-    │                   CategorieService.class
-    │                   DureePretService.class
-    │                   DureeReservationService.class
-    │                   EditeurService.class
-    │                   ExemplaireService.class
-    │                   InscriptionProfilService.class
-    │                   JourFerieService.class
-    │                   LangueService.class
-    │                   LivreService.class
-    │                   PenaliteService.class
-    │                   PretService.class
-    │                   ProfilService.class
-    │                   ProlongationPretService.class
-    │                   QuotaTypePretService.class
-    │                   ReservationService.class
-    │                   RetourPretService.class
-    │                   StatutReservationService.class
-    │                   TypePenaliteProfilService.class
-    │                   TypePretService.class
-    │
-    ├───generated-sources
-    │   └───annotations
-    ├───generated-test-sources
-    │   └───test-annotations
-    ├───maven-archiver
-    │       pom.properties
-    │
-    ├───maven-status
-    │   └───maven-compiler-plugin
-    │       ├───compile
-    │       │   └───default-compile
-    │       │           createdFiles.lst
-    │       │           inputFiles.lst
-    │       │
-    │       └───testCompile
-    │           └───default-testCompile
-    │                   createdFiles.lst
-    │                   inputFiles.lst
-    │
-    └───test-classes
+.
+├── conception-biblio.jpg
+├── deploy.bat
+├── generate-repo.bat
+├── generate-service.bat
+├── LoopingImage.jpg
+├── Mr Naina Biblio.pdf
+├── pom.xml
+├── scheme.lo1
+├── scheme.loo
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── springjpa/
+│   │   │           ├── controller/
+│   │   │           │   └── PretController.java
+│   │   │           ├── entity/
+│   │   │           │   ├── Abonnement.java
+│   │   │           │   ├── Adherent.java
+│   │   │           │   ├── Admin.java
+│   │   │           │   ├── Auteur.java
+│   │   │           │   ├── Categorie.java
+│   │   │           │   ├── DureePret.java
+│   │   │           │   ├── DureeReservation.java
+│   │   │           │   ├── Editeur.java
+│   │   │           │   ├── Exemplaire.java
+│   │   │           │   ├── InscriptionProfil.java
+│   │   │           │   ├── JourFerie.java
+│   │   │           │   ├── Langue.java
+│   │   │           │   ├── Livre.java
+│   │   │           │   ├── Penalite.java
+│   │   │           │   ├── Pret.java
+│   │   │           │   ├── Profil.java
+│   │   │           │   ├── ProlongationPret.java
+│   │   │           │   ├── QuotaTypePretId.java
+│   │   │           │   ├── QuotaTypePret.java
+│   │   │           │   ├── Reservation.java
+│   │   │           │   ├── RetourPret.java
+│   │   │           │   ├── StatutReservation.java
+│   │   │           │   ├── TypePenaliteProfil.java
+│   │   │           │   └── TypePret.java
+│   │   │           ├── main/
+│   │   │           │   └── DemoApplication.java
+│   │   │           ├── repository/
+│   │   │           │   ├── AbonnementRepository.java
+│   │   │           │   ├── AdherentRepository.java
+│   │   │           │   ├── AdminRepository.java
+│   │   │           │   ├── AuteurRepository.java
+│   │   │           │   ├── CategorieRepository.java
+│   │   │           │   ├── DureePretRepository.java
+│   │   │           │   ├── DureeReservationRepository.java
+│   │   │           │   ├── EditeurRepository.java
+│   │   │           │   ├── ExemplaireRepository.java
+│   │   │           │   ├── InscriptionProfilRepository.java
+│   │   │           │   ├── JourFerieRepository.java
+│   │   │           │   ├── LangueRepository.java
+│   │   │           │   ├── LivreRepository.java
+│   │   │           │   ├── PenaliteRepository.java
+│   │   │           │   ├── PretRepository.java
+│   │   │           │   ├── ProfilRepository.java
+│   │   │           │   ├── ProlongationPretRepository.java
+│   │   │           │   ├── QuotaTypePretIdRepository.java
+│   │   │           │   ├── QuotaTypePretRepository.java
+│   │   │           │   ├── ReservationRepository.java
+│   │   │           │   ├── RetourPretRepository.java
+│   │   │           │   ├── StatutReservationRepository.java
+│   │   │           │   ├── TypePenaliteProfilRepository.java
+│   │   │           │   └── TypePretRepository.java
+│   │   │           └── service/
+│   │   │               ├── AbonnementService.java
+│   │   │               ├── AdherentService.java
+│   │   │               ├── AdminService.java
+│   │   │               ├── AuteurService.java
+│   │   │               ├── CategorieService.java
+│   │   │               ├── DureePretService.java
+│   │   │               ├── DureeReservationService.java
+│   │   │               ├── EditeurService.java
+│   │   │               ├── ExemplaireService.java
+│   │   │               ├── InscriptionProfilService.java
+│   │   │               ├── JourFerieService.java
+│   │   │               ├── LangueService.java
+│   │   │               ├── LivreService.java
+│   │   │               ├── PenaliteService.java
+│   │   │               ├── PretService.java
+│   │   │               ├── ProfilService.java
+│   │   │               ├── ProlongationPretService.java
+│   │   │               ├── QuotaTypePretService.java
+│   │   │               ├── ReservationService.java
+│   │   │               ├── RetourPretService.java
+│   │   │               ├── StatutReservationService.java
+│   │   │               ├── TypePenaliteProfilService.java
+│   │   │               └── TypePretService.java
+│   │   └── webapp/
+│   │       └── WEB-INF/
+│   │           ├── config/
+│   │           │   ├── applicationContext.xml
+│   │           │   └── dispatcher-servlet.xml
+│   │           ├── views/
+│   │           │   ├── index.jsp
+│   │           │   └── pret.jsp
+│   │           └── web.xml
+│   └── sql/
+│       ├── data/
+│       │   ├── data-init.sql
+│       │   └── data.sql
+│       └── tables/
+│           └── table.sql
+├── target/
+│   ├── biblio-spring-1.0/
+│   │   ├── META-INF/
+│   │   └── WEB-INF/
+│   │       ├── classes/
+│   │       │   └── com/
+│   │       │       └── springjpa/
+│   │       │           ├── controller/
+│   │       │           │   └── PretController.class
+│   │       │           ├── entity/
+│   │       │           │   ├── Abonnement.class
+│   │       │           │   ├── Adherent.class
+│   │       │           │   ├── Admin.class
+│   │       │           │   ├── Auteur.class
+│   │       │           │   ├── Categorie.class
+│   │       │           │   ├── DureePret.class
+│   │       │           │   ├── DureeReservation.class
+│   │       │           │   ├── Editeur.class
+│   │       │           │   ├── Exemplaire.class
+│   │       │           │   ├── InscriptionProfil.class
+│   │       │           │   ├── JourFerie.class
+│   │       │           │   ├── Langue.class
+│   │       │           │   ├── Livre.class
+│   │       │           │   ├── Penalite.class
+│   │       │           │   ├── Pret.class
+│   │       │           │   ├── Profil.class
+│   │       │           │   ├── ProlongationPret.class
+│   │       │           │   ├── QuotaTypePret.class
+│   │       │           │   ├── QuotaTypePretId.class
+│   │       │           │   ├── Reservation.class
+│   │       │           │   ├── RetourPret.class
+│   │       │           │   ├── StatutReservation.class
+│   │       │           │   ├── TypePenaliteProfil.class
+│   │       │           │   └── TypePret.class
+│   │       │           ├── main/
+│   │       │           │   └── DemoApplication.class
+│   │       │           ├── repository/
+│   │       │           │   ├── AbonnementRepository.class
+│   │       │           │   ├── AdherentRepository.class
+│   │       │           │   ├── AdminRepository.class
+│   │       │           │   ├── AuteurRepository.class
+│   │       │           │   ├── CategorieRepository.class
+│   │       │           │   ├── DureePretRepository.class
+│   │       │           │   ├── DureeReservationRepository.class
+│   │       │           │   ├── EditeurRepository.class
+│   │       │           │   ├── ExemplaireRepository.class
+│   │       │           │   ├── InscriptionProfilRepository.class
+│   │       │           │   ├── JourFerieRepository.class
+│   │       │           │   ├── LangueRepository.class
+│   │       │           │   ├── LivreRepository.class
+│   │       │           │   ├── PenaliteRepository.class
+│   │       │           │   ├── PretRepository.class
+│   │       │           │   ├── ProfilRepository.class
+│   │       │           │   ├── ProlongationPretRepository.class
+│   │       │           │   ├── QuotaTypePretIdRepository.class
+│   │       │           │   ├── QuotaTypePretRepository.class
+│   │       │           │   ├── ReservationRepository.class
+│   │       │           │   ├── RetourPretRepository.class
+│   │       │           │   ├── StatutReservationRepository.class
+│   │       │           │   ├── TypePenaliteProfilRepository.class
+│   │       │           │   └── TypePretRepository.class
+│   │       │           └── service/
+│   │       │               ├── AbonnementService.class
+│   │       │               ├── AdherentService.class
+│   │       │               ├── AdminService.class
+│   │       │               ├── AuteurService.class
+│   │       │               ├── CategorieService.class
+│   │       │               ├── DureePretService.class
+│   │       │               ├── DureeReservationService.class
+│   │       │               ├── EditeurService.class
+│   │       │               ├── ExemplaireService.class
+│   │       │               ├── InscriptionProfilService.class
+│   │       │               ├── JourFerieService.class
+│   │       │               ├── LangueService.class
+│   │       │               ├── LivreService.class
+│   │       │               ├── PenaliteService.class
+│   │       │               ├── PretService.class
+│   │       │               ├── ProfilService.class
+│   │       │               ├── ProlongationPretService.class
+│   │       │               ├── QuotaTypePretService.class
+│   │       │               ├── ReservationService.class
+│   │       │               ├── RetourPretService.class
+│   │       │               ├── StatutReservationService.class
+│   │       │               ├── TypePenaliteProfilService.class
+│   │       │               └── TypePretService.class
+│   │       ├── config/
+│   │       │   ├── applicationContext.xml
+│   │       │   └── dispatcher-servlet.xml
+│   │       ├── lib/
+│   │       │   ├── angus-activation-1.0.0.jar
+│   │       │   ├── antlr4-runtime-4.10.1.jar
+│   │       │   ├── aspectjweaver-1.9.9.1.jar
+│   │       │   ├── byte-buddy-1.12.19.jar
+│   │       │   ├── classmate-1.5.1.jar
+│   │       │   ├── commons-dbcp2-2.9.0.jar
+│   │       │   ├── commons-pool2-2.11.1.jar
+│   │       │   ├── ecj-3.18.0.jar
+│   │       │   ├── hibernate-commons-annotations-6.0.2.Final.jar
+│   │       │   ├── hibernate-core-6.1.5.Final.jar
+│   │       │   ├── HikariCP-5.0.1.jar
+│   │       │   ├── istack-commons-runtime-4.1.1.jar
+│   │       │   ├── jackson-annotations-2.14.1.jar
+│   │       │   ├── jackson-core-2.14.1.jar
+│   │       │   ├── jackson-databind-2.14.1.jar
+│   │       │   ├── jackson-datatype-jdk8-2.14.1.jar
+│   │       │   ├── jackson-datatype-jsr310-2.14.1.jar
+│   │       │   ├── jackson-module-parameter-names-2.14.1.jar
+│   │       │   ├── jakarta.activation-api-2.1.0.jar
+│   │       │   ├── jakarta.annotation-api-2.1.1.jar
+│   │       │   ├── jakarta.el-api-5.0.0.jar
+│   │       │   ├── jakarta.inject-api-2.0.0.jar
+│   │       │   ├── jakarta.persistence-api-3.1.0.jar
+│   │       │   ├── jakarta.servlet.jsp.jstl-2.0.0.jar
+│   │       │   ├── jakarta.servlet.jsp.jstl-api-3.0.0.jar
+│   │       │   ├── jakarta.transaction-api-2.0.1.jar
+│   │       │   ├── jakarta.xml.bind-api-4.0.0.jar
+│   │       │   ├── jandex-2.4.2.Final.jar
+│   │       │   ├── jaxb-core-4.0.1.jar
+│   │       │   ├── jaxb-runtime-4.0.1.jar
+│   │       │   ├── jboss-logging-3.5.0.Final.jar
+│   │       │   ├── jul-to-slf4j-2.0.4.jar
+│   │       │   ├── log4j-api-2.19.0.jar
+│   │       │   ├── log4j-to-slf4j-2.19.0.jar
+│   │       │   ├── logback-classic-1.4.5.jar
+│   │       │   ├── logback-core-1.4.5.jar
+│   │       │   ├── micrometer-commons-1.10.2.jar
+│   │       │   ├── micrometer-observation-1.10.2.jar
+│   │       │   ├── mysql-connector-j-8.0.33.jar
+│   │       │   ├── slf4j-api-2.0.4.jar
+│   │       │   ├── snakeyaml-1.33.jar
+│   │       │   ├── spring-aop-6.0.2.jar
+│   │       │   ├── spring-aspects-6.0.2.jar
+│   │       │   ├── spring-beans-6.0.2.jar
+│   │       │   ├── spring-boot-3.0.0.jar
+│   │       │   ├── spring-boot-autoconfigure-3.0.0.jar
+│   │       │   ├── spring-boot-starter-3.0.0.jar
+│   │       │   ├── spring-boot-starter-aop-3.0.0.jar
+│   │       │   ├── spring-boot-starter-data-jpa-3.0.0.jar
+│   │       │   ├── spring-boot-starter-jdbc-3.0.0.jar
+│   │       │   ├── spring-boot-starter-json-3.0.0.jar
+│   │       │   ├── spring-boot-starter-logging-3.0.0.jar
+│   │       │   ├── spring-boot-starter-tomcat-3.0.0.jar
+│   │       │   ├── spring-boot-starter-web-3.0.0.jar
+│   │       │   ├── spring-context-6.0.2.jar
+│   │       │   ├── spring-core-6.0.2.jar
+│   │       │   ├── spring-data-commons-3.0.0.jar
+│   │       │   ├── spring-data-jpa-3.0.0.jar
+│   │       │   ├── spring-expression-6.0.2.jar
+│   │       │   ├── spring-jcl-6.0.2.jar
+│   │       │   ├── spring-jdbc-6.0.2.jar
+│   │       │   ├── spring-orm-6.0.2.jar
+│   │       │   ├── spring-tx-6.0.2.jar
+│   │       │   ├── spring-web-6.0.2.jar
+│   │       │   ├── spring-webmvc-6.0.2.jar
+│   │       │   ├── tomcat-annotations-api-10.1.1.jar
+│   │       │   ├── tomcat-embed-core-10.1.1.jar
+│   │       │   ├── tomcat-embed-el-10.1.1.jar
+│   │       │   ├── tomcat-embed-jasper-10.1.1.jar
+│   │       │   ├── tomcat-embed-websocket-10.1.1.jar
+│   │       │   └── txw2-4.0.1.jar
+│   │       ├── views/
+│   │       │   ├── index.jsp
+│   │       │   └── pret.jsp
+│   │       └── web.xml
+│   ├── biblio-spring-1.0.war
+│   ├── biblio-spring-1.0.war.original
+│   ├── classes/
+│   │   └── com/
+│   │       └── springjpa/
+│   │           ├── controller/
+│   │           │   └── PretController.class
+│   │           ├── entity/
+│   │           │   ├── Abonnement.class
+│   │           │   ├── Adherent.class
+│   │           │   ├── Admin.class
+│   │           │   ├── Auteur.class
+│   │           │   ├── Categorie.class
+│   │           │   ├── DureePret.class
+│   │           │   ├── DureeReservation.class
+│   │           │   ├── Editeur.class
+│   │           │   ├── Exemplaire.class
+│   │           │   ├── InscriptionProfil.class
+│   │           │   ├── JourFerie.class
+│   │           │   ├── Langue.class
+│   │           │   ├── Livre.class
+│   │           │   ├── Penalite.class
+│   │           │   ├── Pret.class
+│   │           │   ├── Profil.class
+│   │           │   ├── ProlongationPret.class
+│   │           │   ├── QuotaTypePret.class
+│   │           │   ├── QuotaTypePretId.class
+│   │           │   ├── Reservation.class
+│   │           │   ├── RetourPret.class
+│   │           │   ├── StatutReservation.class
+│   │           │   ├── TypePenaliteProfil.class
+│   │           │   └── TypePret.class
+│   │           ├── main/
+│   │           │   └── DemoApplication.class
+│   │           ├── repository/
+│   │           │   ├── AbonnementRepository.class
+│   │           │   ├── AdherentRepository.class
+│   │           │   ├── AdminRepository.class
+│   │           │   ├── AuteurRepository.class
+│   │           │   ├── CategorieRepository.class
+│   │           │   ├── DureePretRepository.class
+│   │           │   ├── DureeReservationRepository.class
+│   │           │   ├── EditeurRepository.class
+│   │           │   ├── ExemplaireRepository.class
+│   │           │   ├── InscriptionProfilRepository.class
+│   │           │   ├── JourFerieRepository.class
+│   │           │   ├── LangueRepository.class
+│   │           │   ├── LivreRepository.class
+│   │           │   ├── PenaliteRepository.class
+│   │           │   ├── PretRepository.class
+│   │           │   ├── ProfilRepository.class
+│   │           │   ├── ProlongationPretRepository.class
+│   │           │   ├── QuotaTypePretIdRepository.class
+│   │           │   ├── QuotaTypePretRepository.class
+│   │           │   ├── ReservationRepository.class
+│   │           │   ├── RetourPretRepository.class
+│   │           │   ├── StatutReservationRepository.class
+│   │           │   ├── TypePenaliteProfilRepository.class
+│   │           │   └── TypePretRepository.class
+│   │           └── service/
+│   │               ├── AbonnementService.class
+│   │               ├── AdherentService.class
+│   │               ├── AdminService.class
+│   │               ├── AuteurService.class
+│   │               ├── CategorieService.class
+│   │               ├── DureePretService.class
+│   │               ├── DureeReservationService.class
+│   │               ├── EditeurService.class
+│   │               ├── ExemplaireService.class
+│   │               ├── InscriptionProfilService.class
+│   │               ├── JourFerieService.class
+│   │               ├── LangueService.class
+│   │               ├── LivreService.class
+│   │               ├── PenaliteService.class
+│   │               ├── PretService.class
+│   │               ├── ProfilService.class
+│   │               ├── ProlongationPretService.class
+│   │               ├── QuotaTypePretService.class
+│   │               ├── ReservationService.class
+│   │               ├── RetourPretService.class
+│   │               ├── StatutReservationService.class
+│   │               ├── TypePenaliteProfilService.class
+│   │               └── TypePretService.class
+│   ├── generated-sources/
+│   │   └── annotations/
+│   ├── maven-archiver/
+│   │   └── pom.properties
+│   └── maven-status/
+│       └── maven-compiler-plugin/
+│           └── compile/
+│               └── default-compile/
+│                   ├── createdFiles.lst
+│                   └── inputFiles.lst
+└── test.txt
