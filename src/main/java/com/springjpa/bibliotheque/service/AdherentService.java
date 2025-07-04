@@ -37,11 +37,9 @@ public class AdherentService {
     };
 
     public boolean isInscrit(Integer matriculeAdherent) {
-        Adherent adherent = findByMatricule(matriculeAdherent);
-        if (adherent == null) return false;
 
         // Récupérer les abonnements de cet adhérent
-        List<Abonnement> abonnementsAdherent = abonnementRepository.findByAdherentMatricule(adherent.getIdAdherent());
+        List<Abonnement> abonnementsAdherent = abonnementRepository.findByAdherentMatricule(matriculeAdherent);
         // Si l'adhérent n'a aucun abonnement
         if(abonnementsAdherent.isEmpty()) return false;
 

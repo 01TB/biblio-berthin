@@ -94,7 +94,7 @@ public class PretController {
         }
 
         // 2. L'adhérant doit être inscrit (à adapter selon ta logique d'inscription)
-        boolean inscrit = adherentService.isInscrit(adherent.getIdAdherent());
+        boolean inscrit = adherentService.isInscrit(matriculeAdherent);
         if (!inscrit) {
             prepareModelPretPage(model);
             model.addAttribute("message", "Adhérant non inscrit ou inscription inactive.");
