@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -84,11 +83,11 @@
             <form action="/login/admin" method="POST">
                 <div class="form-group">
                     <label for="admin-matricule">Matricule</label>
-                    <input type="text" id="admin-matricule" name="matricule" required>
+                    <input type="text" id="admin-matricule" name="admin-matricule" required>
                 </div>
                 <div class="form-group">
                     <label for="admin-password">Mot de passe</label>
-                    <input type="password" id="admin-password" name="password" required>
+                    <input type="password" id="admin-password" name="admin-password" required>
                 </div>
                 <button type="submit">Se connecter</button>
             </form>
@@ -97,11 +96,11 @@
             <form action="/login/adherent" method="POST">
                 <div class="form-group">
                     <label for="adherent-matricule">Matricule</label>
-                    <input type="text" id="adherent-matricule" name="matricule" required>
+                    <input type="text" id="adherent-matricule" name="adherent-matricule" required>
                 </div>
                 <div class="form-group">
                     <label for="adherent-password">Mot de passe</label>
-                    <input type="password" id="adherent-password" name="password" required>
+                    <input type="password" id="adherent-password" name="adherent-password" required>
                 </div>
                 <button type="submit">Se connecter</button>
             </form>

@@ -40,9 +40,9 @@ INSERT INTO type_pret (type) VALUES
 
 -- Insertion des durées de prêt
 INSERT INTO duree_pret (duree, id_profil) VALUES
-(14, 1), -- 14 jours pour Etudiant
-(30, 2), -- 30 jours pour Professeur
-(7, 3);  -- 7 jours pour Externe
+(7, 1), -- 14 jours pour Etudiant
+(10, 2), -- 30 jours pour Professeur
+(5, 3);  -- 7 jours pour Externe
 
 -- Insertion des statuts de réservation
 INSERT INTO statut_reservation (nom_statut) VALUES
@@ -98,9 +98,9 @@ INSERT INTO exemplaire (dispo, id_livre) VALUES
 (TRUE, 5);
 
 -- Insertion des prêts
-INSERT INTO pret (date_debut, id_admin, id_type_pret, id_exemplaire, id_adherent) VALUES
-('2025-07-01 09:00:00', 1, 1, 3, 1),
-('2025-07-02 10:00:00', 2, 2, 4, 2);
+-- INSERT INTO pret (date_debut, id_admin, id_type_pret, id_exemplaire, id_adherent) VALUES
+-- ('2025-07-01 09:00:00', 1, 1, 3, 1),
+-- ('2025-07-02 10:00:00', 2, 2, 4, 2);
 
 -- Insertion des retours de prêt
 INSERT INTO retour_pret (date_retour, id_pret) VALUES
@@ -125,8 +125,12 @@ INSERT INTO prolongation_pret (date_prolongation, id_pret) VALUES
 INSERT INTO accessibilite_profil_livre (id_profil, id_livre) VALUES
 (1, 1), -- Etudiant peut accéder aux Trois Mousquetaires
 (1, 2), -- Etudiant peut accéder à Harry Potter
+(1, 3), -- Etudiant peut accéder au Seigneur des Anneaux
+(2, 1), -- Professeur peut accéder aux Trois Mousquetaires
+(2, 2), -- Professeur peut accéder à Harry Potter
 (2, 3), -- Professeur peut accéder au Seigneur des Anneaux
 (2, 4), -- Professeur peut accéder aux Misérables
+(2, 5), -- Professeur peut à Orgueil et Préjugés
 (3, 5); -- Externe peut accéder à Orgueil et Préjugés
 
 -- Insertion des catégories de livres
@@ -139,12 +143,12 @@ INSERT INTO categorie_livre (id_livre, id_categorie) VALUES
 
 -- Insertion des quotas de type de prêt
 INSERT INTO quota_type_pret (id_profil, id_type_pret, quota) VALUES
-(1, 1, 3), -- Etudiant : 3 prêts court terme
-(1, 2, 1), -- Etudiant : 1 prêt long terme
-(2, 1, 5), -- Professeur : 5 prêts court terme
-(2, 2, 3), -- Professeur : 3 prêts long terme
-(3, 1, 2), -- Externe : 2 prêts court terme
-(3, 2, 0); -- Externe : 0 prêt long terme
+(1, 1, 5), -- Etudiant : 5 prêts sur place
+(1, 2, 3), -- Etudiant : 3 prêt domicile
+(2, 1, 7), -- Professeur : 7 prêts sur place
+(2, 2, 5), -- Professeur : 5 prêts domicile
+(3, 1, 3), -- Externe : 3 prêts sur place
+(3, 2, 2); -- Externe : 2 prêt domicile
 
 -- Insertion des jours fériés
 INSERT INTO jour_ferie (date_ferie) VALUES

@@ -8,6 +8,6 @@
 </head>
 <body>
     <h1>Que voulez-vous faire ?</h1>
-    <a href="/pret/preter">Prêter un Livre</a>
+    <a href="/admin/pret">Prêter un Livre</a>
 </body>
 </html>
