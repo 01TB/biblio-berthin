@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpSession;
 public class AdminController {
 
     @GetMapping
-    public String preter(HttpSession session, Model model) {
+    public String home(HttpSession session, Model model) {
         Admin admin = (Admin)session.getAttribute("admin");
         if(admin==null){
             model.addAttribute("message", "Tentative d'attaque");

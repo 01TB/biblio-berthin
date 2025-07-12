@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpSession;
 public class AdherentController {
 
     @GetMapping
-    public String preter(HttpSession session, Model model) {
+    public String home(HttpSession session, Model model) {
         Adherent adherent = (Adherent)session.getAttribute("adherent");
         if(adherent==null){
             model.addAttribute("message", "Tentative d'attaque");
