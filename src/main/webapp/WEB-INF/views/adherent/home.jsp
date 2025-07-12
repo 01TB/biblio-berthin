@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accueil - Admin</title>
+    <title>Accueil - Adherent</title>
 </head>
 <body>
     <h1>Que voulez-vous faire ?</h1>
-    <a href="/admin/pret">Prêter un Livre</a>
+    <a href="/adherent/reservation">Réserver un Livre</a>
 </body>
 </html>
