@@ -23,9 +23,20 @@
     </script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.18/dist/full.css" rel="stylesheet" />
 </head>
-<body class="bg-beige min-h-screen flex items-center justify-center py-10 px-4 text-darktext">
+<body class="bg-beige min-h-screen py-6 px-4 text-darktext">
 
-    <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg p-8 border border-primary space-y-6">
+    <!-- Section Profil Admin -->
+    <div class="max-w-5xl mx-auto mb-6 flex justify-between items-center bg-white rounded-lg shadow border border-lightgray p-4">
+        <p class="text-darktext font-medium">
+            Admin : <span class="font-semibold">${admin.getNomAdmin()} ${admin.getPrenomAdmin()}</span>
+        </p>
+        <a href="/logout" class="btn btn-sm bg-secondary text-white hover:bg-[#5a3a30]">
+            Se déconnecter
+        </a>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-8 border border-primary space-y-6">
 
         <h1 class="text-3xl font-bold text-primary text-center mb-6">Prêter un Livre</h1>
 
