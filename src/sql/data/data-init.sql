@@ -103,8 +103,8 @@ INSERT INTO exemplaire (dispo, id_livre) VALUES
 -- ('2025-07-02 10:00:00', 2, 2, 4, 2);
 
 -- Insertion des retours de prêt
-INSERT INTO retour_pret (date_retour, id_pret) VALUES
-('2025-07-15 12:00:00', 1);
+-- INSERT INTO retour_pret (date_retour, id_pret) VALUES
+-- ('2025-07-15 12:00:00', 1);
 
 -- Insertion des réservations
 INSERT INTO reservation (date_reservation, date_expiration, id_statut, id_exemplaire, id_adherent) VALUES
@@ -118,8 +118,8 @@ INSERT INTO duree_reservation (duree, id_profil) VALUES
 (5, 3);  -- 5 jours pour Externe
 
 -- Insertion des prolongations de prêt
-INSERT INTO prolongation_pret (date_prolongation, id_pret) VALUES
-('2025-07-10 10:00:00', 2);
+-- INSERT INTO prolongation_pret (date_prolongation, id_pret) VALUES
+-- ('2025-07-10 10:00:00', 2);
 
 -- Insertion des accessibilités profil-livre
 INSERT INTO accessibilite_profil_livre (id_profil, id_livre) VALUES

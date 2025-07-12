@@ -1,130 +1,96 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page de Connexion</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f2f5;
-        }
-        .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-        }
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-        }
-        .tab {
-            flex: 1;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-            background-color: #e0e0e0;
-            border-radius: 4px 4px 0 0;
-        }
-        .tab.active {
-            background-color: #007bff;
-            color: white;
-        }
-        .form-container {
-            display: none;
-        }
-        .form-container.active {
-            display: block;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <title>Login - Bibliothèque</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2E7D32',   // Vert forêt
+                        secondary: '#6D4C41', // Brun livre
+                        beige: '#F5F5DC',     // Fond beige
+                        lightgray: '#E0E0E0', // Fond input
+                        darktext: '#212121'   // Texte
+                    }
+                }
+            }
+        };
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.18/dist/full.css" rel="stylesheet" type="text/css" />
 </head>
-<body>
-    <div class="container">
-        <div class="tabs">
-            <div class="tab active" onclick="showForm('admin')">Admin</div>
-            <div class="tab" onclick="showForm('adherent')">Adhérent</div>
-        </div>
-        <div id="admin-form" class="form-container active">
-            <form action="/login/admin" method="POST">
-                <div class="form-group">
-                    <label for="admin-matricule">Matricule</label>
-                    <input type="text" id="admin-matricule" name="admin-matricule" required>
-                </div>
-                <div class="form-group">
-                    <label for="admin-password">Mot de passe</label>
-                    <input type="password" id="admin-password" name="admin-password" required>
-                </div>
-                <button type="submit">Se connecter</button>
-            </form>
-        </div>
-        <div id="adherent-form" class="form-container">
-            <form action="/login/adherent" method="POST">
-                <div class="form-group">
-                    <label for="adherent-matricule">Matricule</label>
-                    <input type="text" id="adherent-matricule" name="adherent-matricule" required>
-                </div>
-                <div class="form-group">
-                    <label for="adherent-password">Mot de passe</label>
-                    <input type="password" id="adherent-password" name="adherent-password" required>
-                </div>
-                <button type="submit">Se connecter</button>
-            </form>
+<body class="min-h-screen bg-beige flex items-center justify-center">
+
+    <div class="w-full max-w-md p-6 bg-white rounded-xl shadow-lg border border-primary">
+        
+        <!-- Message -->
+        <c:if test="${not empty message}">
+            <div class="alert alert-warning mb-4">
+                <span>${message}</span>
+            </div>
+        </c:if>
+
+        <!-- Tabs -->
+        <div role="tablist" class="tabs tabs-boxed w-full mb-6 bg-lightgray">
+            <a role="tab" class="tab tab-active" id="tab-admin" onclick="switchTab('admin')">Admin</a>
+            <a role="tab" class="tab" id="tab-adherent" onclick="switchTab('adherent')">Adhérent</a>
         </div>
 
-        <c:if test="${message != null}">
-            <p>${message}</p>
-        </c:if>
+        <!-- Form Admin -->
+        <form id="form-admin" action="/login/admin" method="post" class="space-y-4">
+            <div class="form-control">
+                <label class="label text-darktext"><span class="label-text">Matricule Admin</span></label>
+                <input type="number" name="admin-matricule" class="input input-bordered w-full bg-lightgray text-darktext" required />
+            </div>
+
+            <div class="form-control">
+                <label class="label text-darktext"><span class="label-text">Mot de passe</span></label>
+                <input type="password" name="admin-password" class="input input-bordered w-full bg-lightgray text-darktext" required />
+            </div>
+
+            <button class="btn w-full bg-primary text-white hover:bg-green-700">Se connecter</button>
+        </form>
+
+        <!-- Form Adherent -->
+        <form id="form-adherent" action="/login/adherent" method="post" class="space-y-4 hidden">
+            <div class="form-control">
+                <label class="label text-darktext"><span class="label-text">Matricule Adhérent</span></label>
+                <input type="number" name="adherent-matricule" class="input input-bordered w-full bg-lightgray text-darktext" required />
+            </div>
+
+            <div class="form-control">
+                <label class="label text-darktext"><span class="label-text">Mot de passe</span></label>
+                <input type="password" name="adherent-password" class="input input-bordered w-full bg-lightgray text-darktext" required />
+            </div>
+
+            <button class="btn w-full bg-secondary text-white hover:bg-[#5a3a30]">Se connecter</button>
+        </form>
     </div>
 
     <script>
-        function showForm(type) {
-            // Gérer les onglets
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.form-container').forEach(form => {
-                form.classList.remove('active');
-            });
+        function switchTab(type) {
+            const adminForm = document.getElementById('form-admin');
+            const adherentForm = document.getElementById('form-adherent');
+            const tabAdmin = document.getElementById('tab-admin');
+            const tabAdherent = document.getElementById('tab-adherent');
 
-            // Activer l'onglet et le formulaire correspondants
-            document.querySelector(`.tab[onclick="showForm('${type}')"]`).classList.add('active');
-            document.getElementById(`${type}-form`).classList.add('active');
+            if (type === 'admin') {
+                adminForm.classList.remove('hidden');
+                adherentForm.classList.add('hidden');
+                tabAdmin.classList.add('tab-active');
+                tabAdherent.classList.remove('tab-active');
+            } else {
+                adminForm.classList.add('hidden');
+                adherentForm.classList.remove('hidden');
+                tabAdmin.classList.remove('tab-active');
+                tabAdherent.classList.add('tab-active');
+            }
         }
     </script>
+
 </body>
 </html>

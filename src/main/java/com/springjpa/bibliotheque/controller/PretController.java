@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.springjpa.bibliotheque.entity.Adherent;
@@ -29,6 +30,7 @@ import com.springjpa.bibliotheque.service.TypePretService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
+@RequestMapping("/admin/pret")
 public class PretController {
 
     @Autowired
@@ -62,7 +64,7 @@ public class PretController {
         model.addAttribute("typesPret", typePretService.findAll());
     }
 
-    @GetMapping("admin/pret")
+    @GetMapping("")
     public String preter(HttpSession session, Model model) {
         Admin admin = (Admin)session.getAttribute("admin");
         if(admin==null){
@@ -75,7 +77,7 @@ public class PretController {
         return "admin/pret";
     }
 
-    @PostMapping("admin/pret")
+    @PostMapping("")
     public String preterLivre(@RequestParam("matriculeAdherent") int matriculeAdherent,
                               @RequestParam("typePretId") int typePretId,
                               @RequestParam("livreId") int livreId, 
@@ -83,7 +85,7 @@ public class PretController {
         Admin admin = (Admin)session.getAttribute("admin");
         if(admin==null){
             model.addAttribute("message", "Tentative d'attaque");
-            return "/";
+            return "redirect:/";
         }
 
         Adherent adherent = adherentService.findByMatricule(matriculeAdherent);
@@ -95,7 +97,7 @@ public class PretController {
         if (adherent == null) {
             model.addAttribute("message", "Adhérant inexistant.");
             prepareModelPretPage(model);
-            return "admin/pret";
+            return "redirect:/admin/pret";
         }
 
         // 2. L'adhérant doit être inscrit (à adapter selon ta logique d'inscription)
@@ -103,7 +105,7 @@ public class PretController {
         if (!inscrit) {
             prepareModelPretPage(model);
             model.addAttribute("message", "Adhérant non inscrit ou inscription inactive.");
-            return "admin/pret";
+            return "redirect:/admin/pret";
         }
 
         for (Exemplaire exemplaire : exemplaires) {
@@ -112,7 +114,7 @@ public class PretController {
             if (exemplaireOpt.getIdExemplaire() == null) {
                 model.addAttribute("message", "Exemplaire n°" + exemplaire.getIdExemplaire() + " inexistant.");
                 prepareModelPretPage(model);
-                return "admin/pret";
+                return "redirect:/admin/pret";
             }
 
             Profil profil = adherent.getProfil();
@@ -124,7 +126,7 @@ public class PretController {
             } catch (Exception e) {
                 model.addAttribute("message", e.getMessage());
                 prepareModelPretPage(model);
-                return "admin/pret";
+                return "redirect:/admin/pret";
             }
         }
 
@@ -133,7 +135,7 @@ public class PretController {
         if (penalise) {
             model.addAttribute("message", "Adhérant pénalisé, prêt impossible.");
             prepareModelPretPage(model);
-            return "admin/pret";
+            return "redirect:/admin/pret";
         }
 
         // 6. Vérifier que l'adhérant ne dépasse pas le quota pour le type de prêt
@@ -142,7 +144,7 @@ public class PretController {
         if (depasseQuota) {
             model.addAttribute("message", "Quota de prêt dépassé." + depasseQuota);
             prepareModelPretPage(model);
-            return "admin/pret";
+            return "redirect:/admin/pret";
         }
 
         // 7. L'adhérant peut-il prêter ce livre (ex: restrictions sur certains livres)
@@ -151,7 +153,7 @@ public class PretController {
         if (!peutPreter) {
             model.addAttribute("message", "Vous ne pouvez pas emprunter ce livre a cause de votre age ou du type de votre profil");
             prepareModelPretPage(model);
-            return "admin/pret";
+            return "redirect:/admin/pret";
         }
 
 
