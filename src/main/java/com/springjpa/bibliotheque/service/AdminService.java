@@ -9,6 +9,7 @@ import com.springjpa.bibliotheque.repository.AdminRepository;
 
 @Service
 public class AdminService {
+
     @Autowired
     private AdminRepository adminRepository;
 
@@ -22,5 +23,13 @@ public class AdminService {
 
     public void save(Admin admin){
         adminRepository.save(admin);
+    }
+
+    public Admin findByMatriculeAndPassword(Integer matriculeAdmin, String password){
+        return adminRepository.findByMatriculeAndPassword(matriculeAdmin,password);
+    };
+
+    public boolean isAdmin(Integer matriculeAdmin, String password){
+        return findByMatriculeAndPassword(matriculeAdmin, password)!=null;
     }
 }

@@ -51,4 +51,12 @@ public class AdherentService {
         //  Si aucun abonnement n'inclue l'instant actuel
         return false;        
     }
+
+    public Adherent findByMatriculeAndPassword(Integer matriculeAdherent, String password){
+        return adherentRepository.findByMatriculeAndPassword(matriculeAdherent, password);
+    }
+
+    public boolean isAdherent(Integer matriculeAdherent, String password){
+        return findByMatriculeAndPassword(matriculeAdherent, password)!=null;
+    }
 }

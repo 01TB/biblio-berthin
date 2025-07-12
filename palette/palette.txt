@@ -1,0 +1,7 @@
+| Couleur     | Usage               | Code HEX  |
+| ----------- | ------------------- | --------- |
+| Vert forêt  | Accent principal    | `#2E7D32` |
+| Brun livre  | Boutons secondaires | `#6D4C41` |
+| Beige doux  | Fond général        | `#F5F5DC` |
+| Gris clair  | Formulaires / input | `#E0E0E0` |
+| Texte foncé | Texte               | `#212121` |
