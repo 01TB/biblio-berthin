@@ -47,12 +47,16 @@ public class ReservationService {
                                             .findDureeReservationByProfilIdProfil(
                                                 adherent.getProfil().getIdProfil()
                                             );
+        if (dureeReservation == null) {
+            throw new IllegalStateException("Aucune durée de réservation trouvée pour le profil " + adherent.getProfil().getIdProfil());
+        }
         return dateReservation.plusDays(dureeReservation.getDuree());
     }
 
     public long compteReservationsEnCours(Adherent adherent) {
         List<Reservation> allReservations = findByAdherentMatricule(adherent.getMatricule());
         return allReservations.stream()
+                .filter(reservation -> reservation.getStatut().getIdStatut() == 1)
                 .filter(reservation -> {
                     LocalDateTime dateFin = reservation.getDateExpiration();
                     LocalDateTime now = LocalDateTime.now();
@@ -66,5 +70,10 @@ public class ReservationService {
         Integer quotaReservation = profil.getQuotaReservation();
         long nbReservationEnCours = compteReservationsEnCours(adherent);
         return nbReservationEnCours > quotaReservation;
+    }
+
+    public boolean peutEtreAnnulee(Reservation reservation) {
+        return reservation.getStatut().getIdStatut() == 1 // En attente
+                && LocalDateTime.now().isBefore(reservation.getDateExpiration());
     }
 }

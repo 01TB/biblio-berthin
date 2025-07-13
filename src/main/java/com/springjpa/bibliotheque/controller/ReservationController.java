@@ -1,6 +1,7 @@
 package com.springjpa.bibliotheque.controller;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +55,10 @@ public class ReservationController {
     @Autowired
     private StatutReservationService statutReservationService;
     
-    private void prepareModelPage(Model model) {
+    private void prepareModelPage(Model model, Adherent adherent) {
+        List<Reservation> adherentReservations = reservationService.findByAdherentMatricule(adherent.getMatricule());
         model.addAttribute("livres", livreService.findAll());
+        model.addAttribute("reservations", adherentReservations);
     }
 
     @GetMapping("")
@@ -65,16 +68,19 @@ public class ReservationController {
             redirectAttributes.addAttribute("message", "Tentative d'attaque");
             return "redirect:/";
         }
-        prepareModelPage(model);
+        prepareModelPage(model,adherent);
         model.addAttribute("adherent", adherent);
         return "adherent/reservation";
     }
 
     @PostMapping("")
-   public String resereverLivre(
+    public String resereverLivre(
                             @RequestParam("livreId") int livreId, 
-                            @RequestParam("dateReservation") LocalDateTime dateReservation,
+                            @RequestParam("dateReservation") String dateReservationString,
                             HttpSession session, RedirectAttributes redirectAttributes, Model model) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime dateReservation = LocalDateTime.parse(dateReservationString, formatter);
         
         Adherent adherent = (Adherent)session.getAttribute("adherent");
         if(adherent==null){
@@ -86,10 +92,17 @@ public class ReservationController {
         List<Exemplaire> exemplaires = exemplaireService.findByLivreIdLivre(livre.getIdLivre());
         Exemplaire exemplaireReserve = null;
 
-        // 1. L'adhérant doit être inscrit (à adapter selon ta logique d'inscription)
+        // 0. Vérifier que la date de réservation n'est pas dans le passé
+        if (dateReservation.isBefore(LocalDateTime.now())) {
+            prepareModelPage(model,adherent);
+            model.addAttribute("message", "La date de réservation ne peut pas être dans le passé");
+            return "/adherent/reservation";
+        }
+
+        // 1. Vérifier que l'adhérent est inscrit
         boolean inscrit = adherentService.isInscrit(adherent.getMatricule());
         if (!inscrit) {
-            prepareModelPage(model);
+            prepareModelPage(model,adherent);
             model.addAttribute("message", "Adhérant non inscrit ou inscription inactive.");
             return "/adherent/reservation";
         }
@@ -103,57 +116,92 @@ public class ReservationController {
             }
         }
 
-        // 2. L'exemplaire doit être disponible (pas déjà prêté ou déjà réservé)
+        // 2. Vérifier la disponibilité de l'exemplaire
         if(exemplaireReserve==null) {
             model.addAttribute("message", "Aucun exemplaire de ce livre n'est disponible");
-            prepareModelPage(model);
+            prepareModelPage(model,adherent);
             return "/adherent/reservation";
         }
 
-        // 3. Vérifier si l'adhérant n'est pas pénalisé
+        // 3. Vérifier si l'adhérent n'est pas pénalisé
         boolean penalise = penaliteService.isPenalise(LocalDateTime.now(),adherent.getIdAdherent()); 
         if (penalise) {
             model.addAttribute("message", "Adhérant pénalisé, réservation impossible.");
-            prepareModelPage(model);
+            prepareModelPage(model,adherent);
             return "/adherent/reservation";
         }
         
-        // 4. Vérifier que l'adhérant ne dépasse pas le quota pour les réservations
+        // 4. Vérifier le quota de réservations
         boolean depasseQuota = reservationService.deppassementQuotaReservation(adherent);
         if (depasseQuota) {
-            model.addAttribute("message", "Quota de réservation dépassé." + depasseQuota);
-            prepareModelPage(model);
+            model.addAttribute("message", "Quota de réservation dépassé.");
+            prepareModelPage(model,adherent);
             return "/adherent/reservation";
         }
         
-        // 6. L'adhérant peut-il prêter ce livre (ex: restrictions sur certains livres)
-        Boolean peutPreter = livre.peutAcceder(adherent.getProfil());
-        
+        // 5. L'adhérant peut-il prêter ce livre (ex: restrictions sur certains livres)
+        Boolean peutPreter = livre.peutAcceder(profil);
         if (!peutPreter) {
-            model.addAttribute("message", "Vous ne pouvez pas emprunter ce livre a cause de votre age ou du type de votre profil");
-            prepareModelPage(model);
+            prepareModelPage(model, adherent);
+            String test = "";
+            for(Profil prof: livre.getProfils()) {
+                test = test.concat(prof.getNomProfil());
+            }
+            model.addAttribute("message", "Vous ne pouvez pas emprunter ce livre à cause des restrictions de votre profil | " + test + "| " + adherent.getProfil().getNomProfil());
             return "/adherent/reservation";
         }
 
         LocalDateTime dateExpirationReservation = reservationService.getDateExpirationReservation(adherent,dateReservation);
-        StatutReservation statutReservation = statutReservationService.findById(1);
+        StatutReservation statutReservation = statutReservationService.findById(1); // Statut "En attente"
 
-
-        
         Reservation reservation = new Reservation(dateReservation, 
-                                                  dateExpirationReservation, 
-                                                  statutReservation, 
-                                                  exemplaireReserve, 
-                                                  adherent);
+                                                dateExpirationReservation, 
+                                                statutReservation, 
+                                                exemplaireReserve, 
+                                                adherent);
         
         if(exemplaireReserve != null) {
             reservationService.save(reservation);
             model.addAttribute("message", "Réservation faite pour le livre : " + livre.getTitre() + " \npour le : " + dateReservation + " \nexpire le : " + dateExpirationReservation);
         }
 
-        prepareModelPage(model);
+        prepareModelPage(model,adherent);
         return "/adherent/reservation";
     }
 
-
+    @PostMapping("/annuler")
+    public String annulerReservation(@RequestParam("idReservation") Integer idReservation, 
+                                    HttpSession session, 
+                                    RedirectAttributes redirectAttributes) {
+        Adherent adherent = (Adherent)session.getAttribute("adherent");
+        if(adherent == null) {
+            redirectAttributes.addAttribute("message", "Tentative d'attaque");
+            return "redirect:/";
+        }
+        
+        try {
+            Reservation reservation = reservationService.findById(idReservation);
+            if(reservation == null || !reservation.getAdherent().getIdAdherent().equals(adherent.getIdAdherent())) {
+                redirectAttributes.addAttribute("message", "Réservation introuvable ou non autorisée");
+                return "redirect:/adherent/reservation";
+            }
+            
+            // Vérifier que la réservation est bien en attente (statut = 1)
+            if(reservation.getStatut().getIdStatut() != 1) {
+                redirectAttributes.addAttribute("message", "Seules les réservations en attente peuvent être annulées");
+                return "redirect:/adherent/reservation";
+            }
+            
+            // Mettre à jour le statut à "Annulée" (4)
+            StatutReservation statutAnnule = statutReservationService.findById(4);
+            reservation.setStatut(statutAnnule);
+            reservationService.save(reservation);
+            
+            redirectAttributes.addAttribute("message", "Réservation annulée avec succès");
+        } catch (Exception e) {
+            redirectAttributes.addAttribute("message", "Erreur lors de l'annulation de la réservation");
+        }
+        
+        return "redirect:/adherent/reservation";
+    }
 }

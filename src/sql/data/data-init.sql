@@ -107,9 +107,9 @@ INSERT INTO exemplaire (dispo, id_livre) VALUES
 -- ('2025-07-15 12:00:00', 1);
 
 -- Insertion des réservations
-INSERT INTO reservation (date_reservation, date_expiration, id_statut, id_exemplaire, id_adherent) VALUES
-('2025-07-03 08:00:00', '2025-07-10 08:00:00', 1, 1, 3),
-('2025-07-04 09:00:00', '2025-07-11 09:00:00', 1, 5, 2);
+-- INSERT INTO reservation (date_reservation, date_expiration, id_statut, id_exemplaire, id_adherent) VALUES
+-- ('2025-07-03 08:00:00', '2025-07-10 08:00:00', 1, 1, 3),
+-- ('2025-07-04 09:00:00', '2025-07-11 09:00:00', 1, 5, 2);
 
 -- Insertion des durées de réservation
 INSERT INTO duree_reservation (duree, id_profil) VALUES

@@ -170,6 +170,11 @@ public class Livre {
     }
 
     public boolean peutAcceder(Profil profil) {
-        return profils.contains(profil);
+        for(Profil pro: profils){
+            if(pro.getIdProfil().compareTo(profil.getIdProfil()) == 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }

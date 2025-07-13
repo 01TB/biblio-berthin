@@ -172,7 +172,7 @@ public class PretController {
         
         
         // Redirection vers la page de confirmation ou d'accueil après le prêt
-        return "admin/pret";
+        return "/admin/pret";
         
     }
 }
