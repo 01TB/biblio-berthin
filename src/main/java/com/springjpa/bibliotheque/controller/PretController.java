@@ -54,8 +54,8 @@ public class PretController {
 
     @Autowired
     private QuotaTypePretService quotaTypePretService;
+
     @Autowired
-    
     private PenaliteService penaliteService;
 
 
@@ -146,7 +146,7 @@ public class PretController {
         }
 
         // 6. L'adhérant peut-il prêter ce livre (ex: restrictions sur certains livres)
-        Boolean peutPreter = livre.peutPreter(adherent.getProfil());
+        Boolean peutPreter = livre.peutAcceder(adherent.getProfil());
 
         if (!peutPreter) {
             model.addAttribute("message", "Vous ne pouvez pas emprunter ce livre a cause de votre age ou du type de votre profil");
@@ -165,7 +165,6 @@ public class PretController {
 
         if (exemplaireOpt != null) {
             pretService.save(pret);
-            prepareModelPage(model);
             model.addAttribute("message", "Prêt validé et inséré");
         }
 

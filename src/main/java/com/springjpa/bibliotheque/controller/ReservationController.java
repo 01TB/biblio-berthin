@@ -17,10 +17,15 @@ import com.springjpa.bibliotheque.entity.DureeReservation;
 import com.springjpa.bibliotheque.entity.Exemplaire;
 import com.springjpa.bibliotheque.entity.Livre;
 import com.springjpa.bibliotheque.entity.Profil;
+import com.springjpa.bibliotheque.entity.Reservation;
+import com.springjpa.bibliotheque.entity.StatutReservation;
 import com.springjpa.bibliotheque.service.AdherentService;
 import com.springjpa.bibliotheque.service.DureeReservationService;
 import com.springjpa.bibliotheque.service.ExemplaireService;
 import com.springjpa.bibliotheque.service.LivreService;
+import com.springjpa.bibliotheque.service.PenaliteService;
+import com.springjpa.bibliotheque.service.ReservationService;
+import com.springjpa.bibliotheque.service.StatutReservationService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -38,8 +43,17 @@ public class ReservationController {
     private AdherentService adherentService;
 
     @Autowired
+    private PenaliteService penaliteService;
+
+    @Autowired
     private DureeReservationService dureeReservationService;
 
+    @Autowired
+    private ReservationService reservationService;
+
+    @Autowired
+    private StatutReservationService statutReservationService;
+    
     private void prepareModelPage(Model model) {
         model.addAttribute("livres", livreService.findAll());
     }
@@ -77,7 +91,7 @@ public class ReservationController {
         if (!inscrit) {
             prepareModelPage(model);
             model.addAttribute("message", "Adhérant non inscrit ou inscription inactive.");
-            return "/admin/pret";
+            return "/adherent/reservation";
         }
 
         Profil profil = adherent.getProfil();
@@ -93,9 +107,52 @@ public class ReservationController {
         if(exemplaireReserve==null) {
             model.addAttribute("message", "Aucun exemplaire de ce livre n'est disponible");
             prepareModelPage(model);
-            return "/admin/reservationon";
+            return "/adherent/reservation";
         }
-        return "/adherent/reservationon";
+
+        // 3. Vérifier si l'adhérant n'est pas pénalisé
+        boolean penalise = penaliteService.isPenalise(LocalDateTime.now(),adherent.getIdAdherent()); 
+        if (penalise) {
+            model.addAttribute("message", "Adhérant pénalisé, réservation impossible.");
+            prepareModelPage(model);
+            return "/adherent/reservation";
+        }
+        
+        // 4. Vérifier que l'adhérant ne dépasse pas le quota pour les réservations
+        boolean depasseQuota = reservationService.deppassementQuotaReservation(adherent);
+        if (depasseQuota) {
+            model.addAttribute("message", "Quota de réservation dépassé." + depasseQuota);
+            prepareModelPage(model);
+            return "/adherent/reservation";
+        }
+        
+        // 6. L'adhérant peut-il prêter ce livre (ex: restrictions sur certains livres)
+        Boolean peutPreter = livre.peutAcceder(adherent.getProfil());
+        
+        if (!peutPreter) {
+            model.addAttribute("message", "Vous ne pouvez pas emprunter ce livre a cause de votre age ou du type de votre profil");
+            prepareModelPage(model);
+            return "/adherent/reservation";
+        }
+
+        LocalDateTime dateExpirationReservation = reservationService.getDateExpirationReservation(adherent,dateReservation);
+        StatutReservation statutReservation = statutReservationService.findById(1);
+
+
+        
+        Reservation reservation = new Reservation(dateReservation, 
+                                                  dateExpirationReservation, 
+                                                  statutReservation, 
+                                                  exemplaireReserve, 
+                                                  adherent);
+        
+        if(exemplaireReserve != null) {
+            reservationService.save(reservation);
+            model.addAttribute("message", "Réservation faite pour le livre : " + livre.getTitre() + " \npour le : " + dateReservation + " \nexpire le : " + dateExpirationReservation);
+        }
+
+        prepareModelPage(model);
+        return "/adherent/reservation";
     }
 
 

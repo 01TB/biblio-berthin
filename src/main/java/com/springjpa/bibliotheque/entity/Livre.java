@@ -169,7 +169,7 @@ public class Livre {
         this.profils = profils;
     }
 
-    public boolean peutPreter(Profil profil) {
+    public boolean peutAcceder(Profil profil) {
         return profils.contains(profil);
     }
 }
