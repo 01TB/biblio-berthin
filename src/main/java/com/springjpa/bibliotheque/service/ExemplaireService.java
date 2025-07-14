@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.springjpa.bibliotheque.entity.Adherent;
 import com.springjpa.bibliotheque.entity.Exemplaire;
 import com.springjpa.bibliotheque.entity.Pret;
 import com.springjpa.bibliotheque.entity.Reservation;
@@ -74,19 +75,20 @@ public class ExemplaireService {
         return true;
     }
 
-    public boolean isExemplaireReserve(Exemplaire exemplaire, LocalDateTime dateDebut, LocalDateTime dateFin) {
+    public boolean isExemplaireReserve(Exemplaire exemplaire, Adherent adherent, LocalDateTime dateDebut, LocalDateTime dateFin) {
         // Check des réservations
         List<Reservation> reservations = reservationService.findByExemplaireIdExemplaire(exemplaire.getIdExemplaire());
 
         for (Reservation reservation: reservations) {
-            if (PretService.datesSeChevauchent(dateDebut, dateFin, reservation.getDateReservation(), reservation.getDateExpiration())) {
+            if (PretService.datesSeChevauchent(dateDebut, dateFin, reservation.getDateReservation(), reservation.getDateExpiration()) 
+                && reservation.getAdherent().getIdAdherent() != adherent.getIdAdherent()) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean isExemplaireDisponible(Exemplaire exemplaire, LocalDateTime dateDebut, LocalDateTime dateFin) {
+    public boolean isExemplaireDisponible(Exemplaire exemplaire, Adherent adherent, LocalDateTime dateDebut, LocalDateTime dateFin) {
 
         // Check des prêts
         if(!isExemplairePrete(exemplaire,dateDebut,dateFin)) {
@@ -94,18 +96,18 @@ public class ExemplaireService {
         }
         
         // Check des réservations
-        if(!isExemplaireReserve(exemplaire,dateDebut,dateFin)) {
+        if(!isExemplaireReserve(exemplaire,adherent,dateDebut,dateFin)) {
             return false;
         }
 
         return true;
     }
 
-    public boolean isOneExemplairesDisponible(List<Exemplaire> exemplaires, LocalDateTime dateDebut, LocalDateTime dateFin) throws Exception {
+    public boolean isOneExemplairesDisponible(List<Exemplaire> exemplaires, Adherent adherent, LocalDateTime dateDebut, LocalDateTime dateFin) throws Exception {
 
         // Check si au moins un exemplaire est disponible
         for(Exemplaire exemplaire : exemplaires) {
-            if(isExemplaireDisponible(exemplaire,dateDebut,dateFin)) {
+            if(isExemplaireDisponible(exemplaire,adherent,dateDebut,dateFin)) {
                 return true;
             }
         }

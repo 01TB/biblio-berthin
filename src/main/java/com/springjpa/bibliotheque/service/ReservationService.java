@@ -76,4 +76,10 @@ public class ReservationService {
         return reservation.getStatut().getIdStatut() == 1 // En attente
                 && LocalDateTime.now().isBefore(reservation.getDateExpiration());
     }
+
+    public boolean isReservationActive(Reservation reservation) {
+        LocalDateTime now = LocalDateTime.now();
+        return now.isAfter(reservation.getDateReservation()) 
+            && now.isBefore(reservation.getDateExpiration());
+    }
 }

@@ -46,7 +46,7 @@ public class RetourLivreController {
     public String retourner(HttpSession session, RedirectAttributes redirectAttributes, Model model) {
         Admin admin = (Admin)session.getAttribute("admin");
         if(admin == null){
-            redirectAttributes.addFlashAttribute("error", "Veuillez vous connecter en tant qu'administrateur");
+            redirectAttributes.addFlashAttribute("message", "Veuillez vous connecter en tant qu'administrateur");
             return "redirect:/";
         }
 
@@ -61,7 +61,7 @@ public class RetourLivreController {
 
         Admin admin = (Admin)session.getAttribute("admin");
         if(admin == null){
-            redirectAttributes.addFlashAttribute("error", "Session expirée, veuillez vous reconnecter");
+            redirectAttributes.addFlashAttribute("message", "Session expirée, veuillez vous reconnecter");
             return "redirect:/";
         }
 
@@ -81,7 +81,7 @@ public class RetourLivreController {
                 .collect(Collectors.toList());
 
         if(pretsAdherent.isEmpty()) {
-            model.addAttribute("error", "L'adhérent n'a aucun prêt en cours");
+            model.addAttribute("error", "L'adhérent n'a aucun prêt en cours.");
             return "admin/retour";
         }
 
@@ -103,7 +103,7 @@ public class RetourLivreController {
         Admin admin = (Admin)session.getAttribute("admin");
         if(admin == null){
             redirectAttributes.addFlashAttribute("message", "Tentative d'attaque");
-            return "redirect:/admin/login";
+            return "redirect:/";
         }
 
         

@@ -110,7 +110,7 @@ public class ReservationController {
         Profil profil = adherent.getProfil();
         DureeReservation dureeReservation = dureeReservationService.findDureeReservationByProfilIdProfil(profil.getIdProfil());
         for (Exemplaire exemplaire : exemplaires) {
-            boolean disponibilite = exemplaireService.isExemplaireDisponible(exemplaire, LocalDateTime.now(), LocalDateTime.now().plusDays(dureeReservation.getDuree()));
+            boolean disponibilite = exemplaireService.isExemplaireDisponible(exemplaire, adherent, LocalDateTime.now(), LocalDateTime.now().plusDays(dureeReservation.getDuree()));
             if(disponibilite) {
                 exemplaireReserve = exemplaire;
             }
