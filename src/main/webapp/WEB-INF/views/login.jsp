@@ -28,7 +28,7 @@
     <div class="w-full max-w-md p-6 bg-white rounded-xl shadow-lg border border-primary">
         
         <!-- Message -->
-        <c:if test="${not empty message}">
+        <c:if test="${message!=null}">
             <div class="alert alert-warning mb-4">
                 <span>${message}</span>
             </div>
