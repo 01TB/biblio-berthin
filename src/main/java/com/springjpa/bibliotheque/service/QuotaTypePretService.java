@@ -41,6 +41,6 @@ public class QuotaTypePretService {
         Adherent adherent = adherentRepository.findById(idAdherent).orElse(null);
         QuotaTypePret quotaTypePret = findByProfilIdProfilAndTypePretIdTypePret(adherent.getProfil().getIdProfil(), idTypePret);
         long nbPreteEnCours = pretService.comptePretsEnCours(idAdherent, idTypePret);
-        return nbPreteEnCours==quotaTypePret.getQuota();
+        return nbPreteEnCours>=quotaTypePret.getQuota();
     }
 }
