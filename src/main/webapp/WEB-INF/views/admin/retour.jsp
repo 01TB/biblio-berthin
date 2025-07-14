@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.time.LocalDateTime" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -106,11 +107,11 @@
                                             <td>${pretService.getDateFinPret(pret).toString().replace('T', ' ')}</td>
                                             <td>
                                                 <c:choose>
-                                                    <c:when test="${LocalDateTime.now().isBefore(pretService.getDateFinPret(pret) == true)}">
-                                                        <span class="badge badge-primary">En cours</span>
+                                                    <c:when test="${pretService.getDateFinPret(pret).isAfter(LocalDateTime.now())}">
+                                                        <span class="badge badge-sm badge-primary">En cours</span>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <span class="badge badge-error">En retard</span>
+                                                        <span class="badge badge-sm badge-error">En retard</span>
                                                     </c:otherwise>
                                                 </c:choose>
                                             </td>

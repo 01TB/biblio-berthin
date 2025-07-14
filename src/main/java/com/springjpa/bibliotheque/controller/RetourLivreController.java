@@ -47,7 +47,7 @@ public class RetourLivreController {
         Admin admin = (Admin)session.getAttribute("admin");
         if(admin == null){
             redirectAttributes.addFlashAttribute("error", "Veuillez vous connecter en tant qu'administrateur");
-            return "redirect:/admin/login";
+            return "redirect:/";
         }
 
         model.addAttribute("admin", admin);
@@ -62,7 +62,7 @@ public class RetourLivreController {
         Admin admin = (Admin)session.getAttribute("admin");
         if(admin == null){
             redirectAttributes.addFlashAttribute("error", "Session expirée, veuillez vous reconnecter");
-            return "redirect:/admin/login";
+            return "redirect:/";
         }
 
         model.addAttribute("admin", admin);
@@ -102,7 +102,7 @@ public class RetourLivreController {
         
         Admin admin = (Admin)session.getAttribute("admin");
         if(admin == null){
-            redirectAttributes.addFlashAttribute("error", "Session expirée, veuillez vous reconnecter");
+            redirectAttributes.addFlashAttribute("message", "Tentative d'attaque");
             return "redirect:/admin/login";
         }
 
