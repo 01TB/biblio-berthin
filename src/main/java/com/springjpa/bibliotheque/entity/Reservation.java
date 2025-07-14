@@ -1,6 +1,8 @@
 
 package com.springjpa.bibliotheque.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,9 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reservation")
@@ -25,7 +24,7 @@ public class Reservation {
     @Column(name = "date_reservation", nullable = false)
     private LocalDateTime dateReservation;
 
-    @Column(name = "date_expiration", nullable = false)
+    @Column(name = "date_expiration", nullable = true)
     private LocalDateTime dateExpiration;
     
     @ManyToOne
@@ -47,6 +46,7 @@ public class Reservation {
                        StatutReservation statut, Exemplaire exemplaire, 
                        Adherent adherent) {
         this.dateReservation = dateReservation;
+        this.dateExpiration = dateExpiration;
         this.statut = statut;
         this.exemplaire = exemplaire;
         this.adherent = adherent;

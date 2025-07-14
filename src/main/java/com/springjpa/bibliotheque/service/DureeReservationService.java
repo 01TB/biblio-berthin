@@ -1,9 +1,10 @@
 package com.springjpa.bibliotheque.service;
 
-import org.springframework.stereotype.Service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.springjpa.bibliotheque.entity.DureeReservation;
 import com.springjpa.bibliotheque.repository.DureeReservationRepository;
 
@@ -23,4 +24,8 @@ public class DureeReservationService {
     public void save(DureeReservation dureeReservation){
         dureeReservationRepository.save(dureeReservation);
     }
+
+    public DureeReservation findDureeReservationByProfilIdProfil(Integer idProfil) {
+        return dureeReservationRepository.findDureeReservationByProfilIdProfil(idProfil);
+    };
 }

@@ -169,7 +169,12 @@ public class Livre {
         this.profils = profils;
     }
 
-    public boolean peutPreter(Profil profil) {
-        return profils.contains(profil);
+    public boolean peutAcceder(Profil profil) {
+        for(Profil pro: profils){
+            if(pro.getIdProfil().compareTo(profil.getIdProfil()) == 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }

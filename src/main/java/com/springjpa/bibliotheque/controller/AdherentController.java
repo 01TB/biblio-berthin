@@ -20,7 +20,8 @@ public class AdherentController {
             model.addAttribute("message", "Tentative d'attaque");
             return "redirect:/";
         }
-
+        
+        model.addAttribute("adherent",adherent);
         return "adherent/home";
     }
 

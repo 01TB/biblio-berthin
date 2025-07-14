@@ -38,12 +38,6 @@ public class HomeController {
         return "redirect:/";
     }
 
-    @GetMapping("adherent")
-    public String adherent() {
-        // Page d'acceuil d'adhérent
-        return "admin/home"; // Redirection vers la page d'accueil
-    }
-
     @PostMapping("login/admin")
     public String connexionAdmin(@RequestParam("admin-matricule") int matriculeAdmin,
                                  @RequestParam("admin-password") String adminPassword,

@@ -1,17 +1,16 @@
 package com.springjpa.bibliotheque.service;
 
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.springjpa.bibliotheque.entity.Adherent;
 import com.springjpa.bibliotheque.entity.DureePret;
 import com.springjpa.bibliotheque.entity.Pret;
 import com.springjpa.bibliotheque.entity.Profil;
 import com.springjpa.bibliotheque.entity.TypePret;
+import com.springjpa.bibliotheque.repository.DureePretRepository;
 import com.springjpa.bibliotheque.repository.PretRepository;
 
 @Service
@@ -24,7 +23,7 @@ public class PretService {
     private RetourPretService retourPretService;
 
     @Autowired
-    private DureePretService dureePretService;
+    private DureePretRepository dureePretRepository;
 
     public Pret findById(Integer id){
         return pretRepository.findById(id).get();
@@ -68,7 +67,7 @@ public class PretService {
 
     public LocalDateTime getDateFinPret(Pret pret){
         Profil profilAdherent = pret.getAdherent().getProfil();
-        DureePret dureePretAdherent = dureePretService.findByProfilIdProfil(profilAdherent.getIdProfil());
+        DureePret dureePretAdherent = dureePretRepository.findByProfilIdProfil(profilAdherent.getIdProfil());
         return pret.getDateDebut().plusDays(dureePretAdherent.getDuree());
     }
 }

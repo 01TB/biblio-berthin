@@ -18,9 +18,10 @@ public class AdminController {
         Admin admin = (Admin)session.getAttribute("admin");
         if(admin==null){
             model.addAttribute("message", "Tentative d'attaque");
-            return "redirect:/admin/pret";
+            return "redirect:/";
         }
 
+        model.addAttribute("admin",admin);
         return "admin/home";
     }
 
