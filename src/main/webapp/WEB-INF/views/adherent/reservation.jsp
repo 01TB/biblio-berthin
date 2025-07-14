@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -105,12 +104,10 @@
                                     <tr>
                                         <td>${reservation.getExemplaire().getLivre().getTitre()}</td>
                                         <td>
-                                            <fmt:formatDate value="${reservation.getDateReservation()}" 
-                                                            pattern="dd/MM/yyyy HH:mm" />
+                                            ${reservation.getDateReservation().toString().replace('T', ' ')}
                                         </td>
                                         <td>
-                                            <fmt:formatDate value="${reservation.getDateExpiration()}" 
-                                                            pattern="dd/MM/yyyy HH:mm" />
+                                            ${reservation.getDateExpiration().toString().replace('T', ' ')}
                                         </td>
                                         <td>
                                             <c:choose>

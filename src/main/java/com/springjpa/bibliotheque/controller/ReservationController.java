@@ -1,10 +1,10 @@
 package com.springjpa.bibliotheque.controller;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -76,11 +76,11 @@ public class ReservationController {
     @PostMapping("")
     public String resereverLivre(
                             @RequestParam("livreId") int livreId, 
-                            @RequestParam("dateReservation") String dateReservationString,
+                            @RequestParam("dateReservation") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateReservation,
                             HttpSession session, RedirectAttributes redirectAttributes, Model model) {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        LocalDateTime dateReservation = LocalDateTime.parse(dateReservationString, formatter);
+        // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        // LocalDateTime dateReservation = LocalDateTime.parse(dateReservationString, formatter);
         
         Adherent adherent = (Adherent)session.getAttribute("adherent");
         if(adherent==null){
