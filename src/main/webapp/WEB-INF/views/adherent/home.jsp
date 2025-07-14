@@ -9,5 +9,6 @@
 <body>
     <h1>Que voulez-vous faire ?</h1>
     <a href="/adherent/reservation">Réserver un Livre</a>
+    <a href="/adherent/pret">Liste de vos Prêts</a>
 </body>
 </html>

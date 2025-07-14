@@ -98,18 +98,18 @@ INSERT INTO exemplaire (dispo, id_livre) VALUES
 (TRUE, 5);
 
 -- Insertion des prêts
--- INSERT INTO pret (date_debut, id_admin, id_type_pret, id_exemplaire, id_adherent) VALUES
--- ('2025-07-01 09:00:00', 1, 1, 3, 1),
--- ('2025-07-02 10:00:00', 2, 2, 4, 2);
+INSERT INTO pret (date_debut, id_admin, id_type_pret, id_exemplaire, id_adherent) VALUES
+('2025-07-01 09:00:00', 1, 1, 3, 1),
+('2025-07-02 10:00:00', 2, 2, 4, 2);
 
 -- Insertion des retours de prêt
--- INSERT INTO retour_pret (date_retour, id_pret) VALUES
--- ('2025-07-15 12:00:00', 1);
+INSERT INTO retour_pret (date_retour, id_pret) VALUES
+('2025-07-15 12:00:00', 1);
 
 -- Insertion des réservations
--- INSERT INTO reservation (date_reservation, date_expiration, id_statut, id_exemplaire, id_adherent) VALUES
--- ('2025-07-03 08:00:00', '2025-07-10 08:00:00', 1, 1, 3),
--- ('2025-07-04 09:00:00', '2025-07-11 09:00:00', 1, 5, 2);
+INSERT INTO reservation (date_reservation, date_expiration, id_statut, id_exemplaire, id_adherent) VALUES
+('2025-07-03 08:00:00', '2025-07-10 08:00:00', 1, 1, 3),
+('2025-07-04 09:00:00', '2025-07-11 09:00:00', 1, 5, 2);
 
 -- Insertion des durées de réservation
 INSERT INTO duree_reservation (duree, id_profil) VALUES
