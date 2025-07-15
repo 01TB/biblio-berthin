@@ -114,15 +114,15 @@ public class ProlongationController {
 
         Admin admin = (Admin)session.getAttribute("admin");
         if(admin == null){
-            redirectAttributes.addFlashAttribute("message", "Tentative d'attaque");
+            redirectAttributes.addFlashAttribute("error", "Tentative d'attaque");
             return "redirect:/";
         }
 
         Adherent adherent = adherentService.findByMatricule(matriculeAdherent);
         // 0. L'adhérant doit être dans la base de donnée
         if (adherent == null) {
-            redirectAttributes.addAttribute("message", "Adhérant inexistant.");
-            return "redirect:admin/prolongation";
+            redirectAttributes.addAttribute("error", "Adhérant inexistant.");
+            return "redirect:/admin/prolongation";
         }
 
         // 1. Vérifier que le prêt existe
@@ -137,7 +137,7 @@ public class ProlongationController {
 
         // // 1. Vérifier que la date de prolongation n'est pas avant la date de prêt
         // if (dateProlongation.isBefore(pret.getDateDebut())) {
-        //     redirectAttributes.addAttribute("message", "La date de prolongation ne peut pas être avant la date de prêt");
+        //     redirectAttributes.addAttribute("error", "La date de prolongation ne peut pas être avant la date de prêt");
         //     return "redirect:/adherent/prolongation";
         // }
 
@@ -150,25 +150,25 @@ public class ProlongationController {
         // 4. Vérifier si l'adhérant n'est pas pénalisé
         boolean penalise = penaliteService.isPenalise(LocalDateTime.now(),adherent.getIdAdherent()); 
         if (penalise) {
-            redirectAttributes.addAttribute("message", "Adhérant pénalisé, prêt impossible.");
-            return "redirect:admin/prolongation";
+            redirectAttributes.addAttribute("error", "Adhérant pénalisé, prêt impossible.");
+            return "redirect:/admin/prolongation";
         }
 
         // 5. Vérifier que l'adhérant ne dépasse pas le quota prolongation
         Profil profil = adherent.getProfil();
         if(prolongationPretService.compteProlongationEnCours(adherent.getIdAdherent(),dateProlongation) >= profil.getQuotaProlongation()) {
-            redirectAttributes.addAttribute("message", "Adhérant ayant atteint le quota de prolongation.");
-            return "redirect:admin/prolongation";
+            redirectAttributes.addAttribute("error", "Adhérant ayant atteint le quota de prolongation.");
+            return "redirect:/admin/prolongation";
         }
         
         DureePret dureePret = dureePretService.findByProfilIdProfil(profil.getIdProfil());
         
         LocalDateTime dateFinProlongation = dateProlongation.plusDays(dureePret.getDuree());
         
-        // 6. Exemplaire non réserver ou prêter à cette date
-        if(exemplaireService.isExemplaireDisponible(pret.getExemplaire(), adherent, dateProlongation, dateFinProlongation)) {
-            redirectAttributes.addAttribute("message", "Exemplaire réserver ou prêter à cette date.");
-            return "redirect:admin/prolongation";
+        // 6. Exemplaire non réserver à cette date
+        if(!exemplaireService.isExemplaireReserve(pret.getExemplaire(), adherent, dateProlongation, dateFinProlongation)) {
+            redirectAttributes.addAttribute("error", "Exemplaire réserver à cette date.");
+            return "redirect:/admin/prolongation";
         }
 
         // 7. Enregistrer le prolongement
@@ -176,7 +176,7 @@ public class ProlongationController {
         prolongationPretService.save(prolongationPret);
 
 
-        redirectAttributes.addFlashAttribute("Prolongation à partir du " + dateProlongation + " jusqu'au " + dateFinProlongation);
+        redirectAttributes.addFlashAttribute("success","Prolongation à partir du " + dateProlongation + " jusqu'au " + dateFinProlongation);
         
         return "redirect:/admin/prolongation";        
     }

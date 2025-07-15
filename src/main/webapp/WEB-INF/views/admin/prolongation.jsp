@@ -4,121 +4,140 @@
 <%@ page import="java.time.LocalDateTime" %>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Prolongation de prêts</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .badge-primary { background-color: #007bff; }
-        .badge-secondary { background-color: #6c757d; }
-        .badge-danger { background-color: #dc3545; }
-        .table-responsive { margin-top: 20px; }
-    </style>
+    <title>Retour de Livres</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2E7D32',   // Vert forêt
+                        secondary: '#6D4C41', // Brun livre
+                        beige: '#F5F5DC',     // Fond général
+                        lightgray: '#E0E0E0', // Input
+                        darktext: '#212121'   // Texte
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.18/dist/full.css" rel="stylesheet" />
 </head>
-<body>
-    <div class="container mt-4">
-        <h2 class="mb-4">Prolongation de prêts</h2>
-        
-        <c:if test="${not empty message}">
-            <div class="alert alert-success">${message}</div>
-        </c:if>
-        
-        <c:if test="${not empty error}">
-            <div class="alert alert-danger">${error}</div>
-        </c:if>
-        
-        <div class="card mb-4">
-            <div class="card-header">
-                Rechercher un adhérent
-            </div>
-            <div class="card-body">
-                <form action="/admin/prolongation/rechercher" method="post">
-                    <div class="row g-3 align-items-center">
-                        <div class="col-auto">
-                            <label for="matriculeAdherent" class="col-form-label">Matricule adhérent:</label>
-                        </div>
-                        <div class="col-auto">
-                            <input type="number" id="matriculeAdherent" name="matriculeAdherent" class="form-control" required>
-                        </div>
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-primary">Rechercher</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+<body class="bg-beige min-h-screen py-6 px-4 text-darktext">
+
+    <!-- Section Admin -->
+    <div class="max-w-5xl mx-auto mb-6 flex justify-between items-center bg-white rounded-lg shadow border border-lightgray p-4">
+        <p class="text-darktext font-medium">
+            Bibliothécaire : <span class="font-semibold">${admin.getNomAdmin()} ${admin.getPrenomAdmin()}</span>
+            (Matricule: ${admin.getMatricule()})
+        </p>
+        <a href="/logout" class="btn btn-sm bg-secondary text-white hover:bg-[#5a3a30]">
+            Se déconnecter
+        </a>
+    </div>
+
+    <div class="max-w-5xl mx-auto space-y-8">
+        <!-- Formulaire de recherche -->
+        <div class="bg-white rounded-xl shadow-lg p-8 border border-primary space-y-6">
+            <h1 class="text-3xl font-bold text-primary text-center mb-6">Retour de Livres</h1>
+
+            <!-- Messages d'erreur/succès -->
+            <c:if test="${not empty error}">
+                <div class="alert alert-error">
+                    <span>${error}</span>
+                </div>
+            </c:if>
+            <c:if test="${not empty warning}">
+                <div class="alert alert-warning">
+                    <span>${warning}</span>
+                </div>
+            </c:if>
+            <c:if test="${not empty success}">
+                <div class="alert alert-success">
+                    <span>${success}</span>
+                </div>
+            </c:if>
+
+            <form action="/admin/prolongation/rechercher" method="post" class="space-y-4">
+                <div class="form-control">
+                    <label for="matriculeAdherent" class="label">
+                        <span class="label-text">Matricule Adhérent</span>
+                    </label>
+                    <input type="number" id="matriculeAdherent" name="matriculeAdherent" 
+                           class="input input-bordered bg-lightgray text-darktext" required />
+                </div>
+
+                <div class="form-control mt-6">
+                    <button type="submit" class="btn bg-primary text-white hover:bg-green-800">
+                        Rechercher les prêts
+                    </button>
+                </div>
+            </form>
         </div>
-        
+
+        <!-- Liste des prêts si adhérent trouvé -->
         <c:if test="${not empty adherent}">
-            <div class="card mb-4">
-                <div class="card-header">
-                    Informations de l'adhérent
-                </div>
-                <div class="card-body">
-                    <p><strong>Nom:</strong> ${adherent.getNomAdherent()}</p>
-                    <p><strong>Prénom:</strong> ${adherent.getPrenomAdherent()}</p>
-                    <p><strong>Profil:</strong> ${adherent.getProfil().getNomProfil()}</p>
-                </div>
-            </div>
-            
-            <div class="card">
-                <div class="card-header">
-                    Prêts en cours
-                </div>
-                <div class="card-body">
-                    <c:choose>
-                        <c:when test="${not empty pretsAdherent}">
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
+            <div class="bg-white rounded-xl shadow-lg p-8 border border-secondary space-y-6">
+                <h2 class="text-2xl font-bold text-secondary text-center mb-6">
+                    Prêts en cours pour ${adherent.getNomAdherent()} ${adherent.getPrenomAdherent()}
+                </h2>
+                
+                <c:choose>
+                    <c:when test="${not empty pretsAdherent}">
+                        <div class="overflow-x-auto">
+                            <table class="table w-full">
+                                <thead>
+                                    <tr>
+                                        <th>Livre</th>
+                                        <th>ISBN</th>
+                                        <th>Date Début</th>
+                                        <th>Date Fin</th>
+                                        <th>Statut</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach var="pret" items="${pretsAdherent}">
                                         <tr>
-                                            <th>ID Prêt</th>
-                                            <th>Exemplaire</th>
-                                            <th>Date début</th>
-                                            <th>Date fin</th>
-                                            <th>Statut</th>
-                                            <th>Action</th>
+                                            <td>${pret.getExemplaire().getLivre().getTitre()}</td>
+                                            <td>${pret.getExemplaire().getLivre().getIsbn()}</td>
+                                            <td>${pret.getDateDebut().toString().replace('T', ' ')}</td>
+                                            <td>${pretService.getDateFinPret(pret).toString().replace('T', ' ')}</td>
+                                            <td>
+                                                <c:choose>
+                                                    <c:when test="${pretService.getDateFinPret(pret).isAfter(LocalDateTime.now())}">
+                                                        <span class="badge badge-sm badge-primary">En cours</span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span class="badge badge-sm badge-error">En retard</span>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </td>
+                                            <form action="/admin/prolongation/prolonger" method="post" class="inline">
+                                                <input type="hidden" name="matriculeAdherent" value="${adherent.getMatricule()}">
+                                                <input type="hidden" name="idPret" value="${pret.getIdPret()}">
+                                                <td>
+                                                        <button type="submit" class="btn btn-sm bg-green-600 text-white hover:bg-green-800">
+                                                            Prolonger
+                                                        </button>
+                                                </td>
+                                            </form>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="${pretsAdherent}" var="pret">
-                                            <tr>
-                                                <td>${pret.idPret}</td>
-                                                <td>${pret.exemplaire.ouvrage.titre} (${pret.exemplaire.idExemplaire})</td>
-                                                <td><fmt:formatDate value="${pret.dateDebut}" pattern="dd/MM/yyyy HH:mm"/></td>
-                                                <td><fmt:formatDate value="${pretService.getDateFinPret(pret)}" pattern="dd/MM/yyyy HH:mm"/></td>
-                                                <td>
-                                                    <c:choose>
-                                                        <c:when test="${LocalDateTime.now().isBefore(pretService.getDateFinPret(pret))}">
-                                                            <span class="badge badge-primary">En cours</span>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <span class="badge badge-danger">En retard</span>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </td>
-                                                <td>
-                                                    <form action="/admin/prolongation/prolonger" method="post">
-                                                        <input type="hidden" name="matriculeAdherent" value="${adherent.getMatricule()}">
-                                                        <input type="hidden" name="idPret" value="${pret.getIdPret()}">
-                                                        <button type="submit" class="btn btn-sm btn-success">Prolonger</button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </c:when>
-                        <c:otherwise>
-                            <p class="text-muted">Aucun prêt en cours pour cet adhérent.</p>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <p class="text-center text-gray-500">Aucun prêt en cours pour cet adhérent.</p>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </c:if>
     </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
