@@ -229,8 +229,7 @@
                     <label for="datePret" class="label">
                         <span class="label-text">Date de prêt</span>
                     </label>
-                    <input type="datetime-local" name="datePret" id="datePret"
-                        class="input input-bordered bg-lightgray text-darktext" required />
+                    <input type="datetime-local" name="datePret" id="datePret" class="input input-bordered bg-lightgray text-darktext" required />
                 </div>
                 
                 <div class="flex justify-end space-x-2 mt-6">
