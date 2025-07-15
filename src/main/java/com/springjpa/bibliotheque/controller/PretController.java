@@ -112,6 +112,7 @@ public class PretController {
     
         // 0. Vérifier que la date de pret n'est pas avant maintenant
         if (datePret.isBefore(LocalDateTime.now())) {
+            prepareModelPage(model);
             model.addAttribute("message", "La date de prêt ne peut pas être dans le passé");
             return "admin/pret";
         }

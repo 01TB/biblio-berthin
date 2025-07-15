@@ -25,4 +25,16 @@ public class AdminController {
         return "admin/home";
     }
 
+    @GetMapping("/livre")
+    public String livre(HttpSession session, Model model) {
+        Admin admin = (Admin)session.getAttribute("admin");
+        if(admin==null){
+            model.addAttribute("message", "Tentative d'attaque");
+            return "redirect:/";
+        }
+
+        model.addAttribute("admin",admin);
+        return "admin/livre";
+    }
+
 }
