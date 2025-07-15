@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -93,6 +94,7 @@ public class PretController {
                             @RequestParam("matriculeAdherent") int matriculeAdherent,
                             @RequestParam("typePretId") int typePretId,
                             @RequestParam("livreId") int livreId, 
+                            @RequestParam("datePret") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime datePret,
                             @RequestParam(value = "reservationId", required = false) Integer reservationId,
                             HttpSession session, RedirectAttributes redirectAttributes, Model model) {
                                 
@@ -108,6 +110,12 @@ public class PretController {
         List<Exemplaire> exemplaires = exemplaireService.findByLivreIdLivre(livre.getIdLivre());
         Exemplaire exemplaireOpt =  null;
     
+        // 0. Vérifier que la date de pret n'est pas avant maintenant
+        if (datePret.isBefore(LocalDateTime.now())) {
+            model.addAttribute("message", "La date de prêt ne peut pas être dans le passé");
+            return "admin/pret";
+        }
+
         // 1. L'adhérant doit être dans la base de donnée
         if (adherent == null) {
             model.addAttribute("message", "Adhérant inexistant.");
@@ -126,7 +134,7 @@ public class PretController {
         Profil profil = adherent.getProfil();
         DureePret dureePret = dureePretService.findByProfilIdProfil(profil.getIdProfil());
         for (Exemplaire exemplaire : exemplaires) {
-            boolean disponibilite = exemplaireService.isExemplaireDisponible(exemplaire, adherent, LocalDateTime.now(), LocalDateTime.now().plusDays(dureePret.getDuree()));
+            boolean disponibilite = exemplaireService.isExemplaireDisponible(exemplaire, adherent, datePret, datePret.plusDays(dureePret.getDuree()));
             if(disponibilite) {
                 exemplaireOpt = exemplaire;
             }
@@ -140,7 +148,7 @@ public class PretController {
         }
 
         // 4. Vérifier si l'adhérant n'est pas pénalisé
-        boolean penalise = penaliteService.isPenalise(LocalDateTime.now(),adherent.getIdAdherent()); 
+        boolean penalise = penaliteService.isPenalise(datePret,adherent.getIdAdherent()); 
         if (penalise) {
             model.addAttribute("message", "Adhérant pénalisé, prêt impossible.");
             prepareModelPage(model);
@@ -167,7 +175,7 @@ public class PretController {
 
 
         Pret pret = new Pret(
-            LocalDateTime.now(), // Date de début du prêt
+            datePret, // Date de début du prêt
             admin, // Admin (à définir selon votre logique, peut-être l'admin connecté)
             typePretService.findById(typePretId), // Type de prêt
             exemplaireOpt, // Exemplaire (le dernier exemplaire vérifié)

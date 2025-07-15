@@ -65,6 +65,7 @@ public class PretAdherentController {
         model.addAttribute("adherent", adherent);
         model.addAttribute("pretsAdherent", pretsAdherent);
         model.addAttribute("prolongations", prolongations);
+        model.addAttribute("pretService", pretService);
         return "adherent/pret";
     }
 }
