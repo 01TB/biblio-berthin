@@ -27,6 +27,8 @@ import com.springjpa.bibliotheque.service.TypePretService;
 @RequestMapping("/api/adherents")
 public class ApiAdherentController {
 
+    // http://localhost:8081/api/adherents/1/infos
+
     @Autowired
     private AdherentService adherentService;
 
@@ -45,49 +47,64 @@ public class ApiAdherentController {
     @Autowired
     QuotaTypePretService quotaTypePretService;
 
-    @GetMapping("/{id}/adherent-infos")
-    public ResponseEntity<AdherentInfosDTO> getInfosAdherent(@PathVariable Integer id) {
+    @GetMapping("/{id}/infos")
+    public ResponseEntity<?> getInfosAdherent(@PathVariable Integer id) {
         try {
-
             Adherent adherent = adherentService.findById(id);
-            List<TypePret> allTypePrets = typePretService.findAll(); // 1 : Sur place | 2 : Domicile
+            if (adherent == null) {
+                return ResponseEntity.notFound().build();
+            }
 
-            TypePret typePretSurPlace = allTypePrets.get(1);
-            TypePret typePretDomicile = allTypePrets.get(2);
+            List<TypePret> allTypePrets = typePretService.findAll();
+            if (allTypePrets.size() < 2) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Données des types de prêt incomplètes");
+            }
+
+            TypePret typePretSurPlace = allTypePrets.get(0); // Sur place
+            TypePret typePretDomicile = allTypePrets.get(1); // Domicile
 
             QuotaTypePret quotaSurPlace = quotaTypePretService
-                                          .findByProfilIdProfilAndTypePretIdTypePret(
-                                                adherent.getProfil().getIdProfil()
-                                                ,typePretSurPlace.getIdTypePret());
-
+                .findByProfilIdProfilAndTypePretIdTypePret(
+                    adherent.getProfil().getIdProfil(),
+                    typePretSurPlace.getIdTypePret());
+            
             QuotaTypePret quotaDomicile = quotaTypePretService
-                                          .findByProfilIdProfilAndTypePretIdTypePret(
-                                                adherent.getProfil().getIdProfil()
-                                                ,typePretDomicile.getIdTypePret());
+                .findByProfilIdProfilAndTypePretIdTypePret(
+                    adherent.getProfil().getIdProfil(),
+                    typePretDomicile.getIdTypePret());
 
-            long nbPretSurPlace = pretService.comptePretsEnCours(adherent.getIdAdherent()
-                                                                 ,typePretSurPlace.getIdTypePret());
-            long nbPretDomicile = pretService.comptePretsEnCours(adherent.getIdAdherent()
-                                                                 ,typePretDomicile.getIdTypePret());
+            if (quotaSurPlace == null || quotaDomicile == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Données des quotas manquantes");
+            }
+
+            long nbPretSurPlace = pretService.comptePretsEnCours(
+                adherent.getIdAdherent(),
+                typePretSurPlace.getIdTypePret());
+            
+            long nbPretDomicile = pretService.comptePretsEnCours(
+                adherent.getIdAdherent(),
+                typePretDomicile.getIdTypePret());
 
             List<Abonnement> abonnements = abonnementService.findByAdherentMatricule(adherent.getMatricule());
-
             boolean isAbonne = adherentService.isInscrit(adherent.getMatricule());
-
             boolean penalise = penaliteService.isPenalise(LocalDateTime.now(), adherent.getIdAdherent());
 
             AdherentInfosDTO response = new AdherentInfosDTO(
                 quotaDomicile.getQuota(), 
                 quotaSurPlace.getQuota(), 
                 (int)nbPretDomicile, 
-                (int)nbPretDomicile, 
+                (int)nbPretSurPlace, 
                 abonnements, 
                 isAbonne, 
                 penalise);
-            return ResponseEntity.ok(response);            
+                
+            return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Erreur interne: " + e.getMessage());
         }
     }
     
