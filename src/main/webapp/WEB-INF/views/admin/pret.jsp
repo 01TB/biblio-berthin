@@ -74,6 +74,14 @@
                 </select>
             </div>
 
+            <div class="form-control">
+                <label for="datePret" class="label">
+                    <span class="label-text">Date de prêt</span>
+                </label>
+                <input type="datetime-local" name="datePret" id="datePret"
+                    class="input input-bordered bg-lightgray text-darktext" required />
+            </div>
+
             <div class="form-control mt-6">
                 <button type="submit" class="btn bg-primary text-white hover:bg-green-800">
                     Valider le prêt
