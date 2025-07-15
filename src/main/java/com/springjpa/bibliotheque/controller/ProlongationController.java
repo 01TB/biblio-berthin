@@ -15,16 +15,22 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.springjpa.bibliotheque.entity.Adherent;
 import com.springjpa.bibliotheque.entity.Admin;
+import com.springjpa.bibliotheque.entity.DureePret;
 import com.springjpa.bibliotheque.entity.Pret;
+import com.springjpa.bibliotheque.entity.Profil;
+import com.springjpa.bibliotheque.entity.ProlongationPret;
 import com.springjpa.bibliotheque.service.AdherentService;
+import com.springjpa.bibliotheque.service.DureePretService;
+import com.springjpa.bibliotheque.service.ExemplaireService;
 import com.springjpa.bibliotheque.service.PenaliteService;
 import com.springjpa.bibliotheque.service.PretService;
+import com.springjpa.bibliotheque.service.ProlongationPretService;
 import com.springjpa.bibliotheque.service.RetourPretService;
 
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/adherent/prolongation")
+@RequestMapping("/admin/prolongation")
 public class ProlongationController {
 
     @Autowired
@@ -38,6 +44,15 @@ public class ProlongationController {
 
     @Autowired
     private PenaliteService penaliteService;
+
+    @Autowired
+    private ProlongationPretService prolongationPretService;
+
+    @Autowired
+    private DureePretService dureePretService;
+
+    @Autowired
+    private ExemplaireService exemplaireService;
 
     @GetMapping("")
     public String retourner(HttpSession session, RedirectAttributes redirectAttributes, Model model) {
@@ -117,6 +132,9 @@ public class ProlongationController {
             return "redirect:/admin/prolongation";
         }
 
+        // Date de début de la prolongation
+        LocalDateTime dateProlongation = pretService.getDateFinPret(pret);
+
         // // 1. Vérifier que la date de prolongation n'est pas avant la date de prêt
         // if (dateProlongation.isBefore(pret.getDateDebut())) {
         //     redirectAttributes.addAttribute("message", "La date de prolongation ne peut pas être avant la date de prêt");
@@ -133,10 +151,33 @@ public class ProlongationController {
         boolean penalise = penaliteService.isPenalise(LocalDateTime.now(),adherent.getIdAdherent()); 
         if (penalise) {
             redirectAttributes.addAttribute("message", "Adhérant pénalisé, prêt impossible.");
-            return "redirect:admin/pret";
+            return "redirect:admin/prolongation";
+        }
+
+        // 5. Vérifier que l'adhérant ne dépasse pas le quota prolongation
+        Profil profil = adherent.getProfil();
+        if(prolongationPretService.compteProlongationEnCours(adherent.getIdAdherent(),dateProlongation) >= profil.getQuotaProlongation()) {
+            redirectAttributes.addAttribute("message", "Adhérant ayant atteint le quota de prolongation.");
+            return "redirect:admin/prolongation";
         }
         
+        DureePret dureePret = dureePretService.findByProfilIdProfil(profil.getIdProfil());
         
-        return "";
+        LocalDateTime dateFinProlongation = dateProlongation.plusDays(dureePret.getDuree());
+        
+        // 6. Exemplaire non réserver ou prêter à cette date
+        if(exemplaireService.isExemplaireDisponible(pret.getExemplaire(), adherent, dateProlongation, dateFinProlongation)) {
+            redirectAttributes.addAttribute("message", "Exemplaire réserver ou prêter à cette date.");
+            return "redirect:admin/prolongation";
+        }
+
+        // 7. Enregistrer le prolongement
+        ProlongationPret prolongationPret = new ProlongationPret(dateProlongation, pret);
+        prolongationPretService.save(prolongationPret);
+
+
+        redirectAttributes.addFlashAttribute("Prolongation à partir du " + dateProlongation + " jusqu'au " + dateFinProlongation);
+        
+        return "redirect:/admin/prolongation";        
     }
 }

@@ -17,6 +17,7 @@
     <h1>Que voulez-vous faire ?</h1>
     <a href="/admin/pret">Prêter un Livre</a>
     <a href="/admin/retour">Retourner un Livre</a>
-    <a href="/admin/reservation">Gérer les réservations</a>
+    <a href="/admin/reservation">Gérer les Réservations</a>
+    <a href="/admin/prolongation">Prolonger Prêts</a>
 </body>
 </html>
