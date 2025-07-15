@@ -116,8 +116,8 @@ public class RetourLivreController {
 
         // 1. Vérifier que la date de retour n'est pas avant la date de prêt
         if (dateRetour.isBefore(pret.getDateDebut())) {
-            model.addAttribute("message", "La date de retour ne peut pas être avant la date de prêt");
-            return "/adherent/reservation";
+            redirectAttributes.addAttribute("message", "La date de retour ne peut pas être avant la date de prêt");
+            return "redirect:/adherent/reservation";
         }
 
         // 2. Vérifier si le prêt n'a pas déjà été retourné

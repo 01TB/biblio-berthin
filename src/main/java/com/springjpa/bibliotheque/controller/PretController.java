@@ -110,6 +110,12 @@ public class PretController {
         List<Exemplaire> exemplaires = exemplaireService.findByLivreIdLivre(livre.getIdLivre());
         Exemplaire exemplaireOpt =  null;
     
+        // 0. Vérifier que la date de pret n'est pas avant maintenant
+        if (datePret.isBefore(LocalDateTime.now())) {
+            model.addAttribute("message", "La date de prêt ne peut pas être dans le passé");
+            return "admin/pret";
+        }
+
         // 1. L'adhérant doit être dans la base de donnée
         if (adherent == null) {
             model.addAttribute("message", "Adhérant inexistant.");
