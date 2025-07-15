@@ -19,6 +19,8 @@ import com.springjpa.bibliotheque.entity.Exemplaire;
 import com.springjpa.bibliotheque.entity.Livre;
 import com.springjpa.bibliotheque.entity.Pret;
 import com.springjpa.bibliotheque.entity.Profil;
+import com.springjpa.bibliotheque.entity.Reservation;
+import com.springjpa.bibliotheque.entity.StatutReservation;
 import com.springjpa.bibliotheque.service.AdherentService;
 import com.springjpa.bibliotheque.service.DureePretService;
 import com.springjpa.bibliotheque.service.ExemplaireService;
@@ -26,6 +28,8 @@ import com.springjpa.bibliotheque.service.LivreService;
 import com.springjpa.bibliotheque.service.PenaliteService;
 import com.springjpa.bibliotheque.service.PretService;
 import com.springjpa.bibliotheque.service.QuotaTypePretService;
+import com.springjpa.bibliotheque.service.ReservationService;
+import com.springjpa.bibliotheque.service.StatutReservationService;
 import com.springjpa.bibliotheque.service.TypePretService;
 
 import jakarta.servlet.http.HttpSession;
@@ -58,6 +62,12 @@ public class PretController {
     @Autowired
     private PenaliteService penaliteService;
 
+    @Autowired
+    private ReservationService reservationService;
+
+    @Autowired
+    private StatutReservationService statutReservationService;
+
 
     private void prepareModelPage(Model model) {
         model.addAttribute("livres", livreService.findAll());
@@ -83,6 +93,7 @@ public class PretController {
                             @RequestParam("matriculeAdherent") int matriculeAdherent,
                             @RequestParam("typePretId") int typePretId,
                             @RequestParam("livreId") int livreId, 
+                            @RequestParam(value = "reservationId", required = false) Integer reservationId,
                             HttpSession session, RedirectAttributes redirectAttributes, Model model) {
                                 
         Admin admin = (Admin)session.getAttribute("admin");
@@ -101,7 +112,7 @@ public class PretController {
         if (adherent == null) {
             model.addAttribute("message", "Adhérant inexistant.");
             prepareModelPage(model);
-            return "/admin/pret";
+            return "admin/pret";
         }
 
         // 2. L'adhérant doit être inscrit (à adapter selon ta logique d'inscription)
@@ -109,13 +120,13 @@ public class PretController {
         if (!inscrit) {
             prepareModelPage(model);
             model.addAttribute("message", "Adhérant non inscrit ou inscription inactive.");
-            return "/admin/pret";
+            return "admin/pret";
         }
 
         Profil profil = adherent.getProfil();
         DureePret dureePret = dureePretService.findByProfilIdProfil(profil.getIdProfil());
         for (Exemplaire exemplaire : exemplaires) {
-            boolean disponibilite = exemplaireService.isExemplaireDisponible(exemplaire, LocalDateTime.now(), LocalDateTime.now().plusDays(dureePret.getDuree()));
+            boolean disponibilite = exemplaireService.isExemplaireDisponible(exemplaire, adherent, LocalDateTime.now(), LocalDateTime.now().plusDays(dureePret.getDuree()));
             if(disponibilite) {
                 exemplaireOpt = exemplaire;
             }
@@ -125,7 +136,7 @@ public class PretController {
         if(exemplaireOpt==null) {
             model.addAttribute("message", "Aucun exemplaire de ce livre n'est disponible");
             prepareModelPage(model);
-            return "/admin/pret";
+            return "admin/pret";
         }
 
         // 4. Vérifier si l'adhérant n'est pas pénalisé
@@ -133,7 +144,7 @@ public class PretController {
         if (penalise) {
             model.addAttribute("message", "Adhérant pénalisé, prêt impossible.");
             prepareModelPage(model);
-            return "/admin/pret";
+            return "admin/pret";
         }
 
         // 5. Vérifier que l'adhérant ne dépasse pas le quota pour le type de prêt
@@ -142,7 +153,7 @@ public class PretController {
         if (depasseQuota) {
             model.addAttribute("message", "Quota de prêt dépassé." + depasseQuota);
             prepareModelPage(model);
-            return "/admin/pret";
+            return "admin/pret";
         }
 
         // 6. L'adhérant peut-il prêter ce livre (ex: restrictions sur certains livres)
@@ -151,7 +162,7 @@ public class PretController {
         if (!peutPreter) {
             model.addAttribute("message", "Vous ne pouvez pas emprunter ce livre a cause de votre age ou du type de votre profil");
             prepareModelPage(model);
-            return "/admin/pret";
+            return "admin/pret";
         }
 
 
@@ -168,11 +179,21 @@ public class PretController {
             model.addAttribute("message", "Prêt validé et inséré");
         }
 
+        // Si c'était une réservation transformée en prêt
+        if (reservationId != null) {
+            Reservation reservation = reservationService.findById(reservationId);
+            if (reservation != null) {
+                // Marquer la réservation comme honorée
+                StatutReservation statutHonore = statutReservationService.findById(3); // Honorée
+                reservation.setStatut(statutHonore);
+                reservationService.save(reservation);
+            }
+        }
         prepareModelPage(model);
         
         
         // Redirection vers la page de confirmation ou d'accueil après le prêt
-        return "/admin/pret";
+        return "admin/pret";
         
     }
 }
