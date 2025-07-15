@@ -9,6 +9,6 @@ import com.springjpa.bibliotheque.entity.Abonnement;
 
 @Repository
 public interface AbonnementRepository extends JpaRepository<Abonnement, Integer> {
-    List<Abonnement> findByIdAbonnement(Integer idAdherent);
-    List<Abonnement> findByAdherentMatricule(Integer adherentMatricule);
+    public List<Abonnement> findByIdAbonnement(Integer idAdherent);
+    public List<Abonnement> findByAdherentMatricule(Integer adherentMatricule);
 }
