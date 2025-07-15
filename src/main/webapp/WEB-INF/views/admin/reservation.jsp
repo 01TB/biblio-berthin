@@ -125,15 +125,22 @@
                                             <td>${reservation.getDateReservation().toString().replace('T', ' ')}</td>
                                             <td>${reservation.getDateExpiration().toString().replace('T', ' ')}</td>
                                             <td>
-                                                <span class="badge 
-                                                    <c:choose>
-                                                        <c:when test="${reservation.getStatut().getIdStatut() == 1}">badge-primary</c:when>
-                                                        <c:when test="${reservation.getStatut().getIdStatut() == 2}">badge-secondary</c:when>
-                                                        <c:when test="${reservation.getStatut().getIdStatut() == 3}">badge-success</c:when>
-                                                        <c:when test="${reservation.getStatut().getIdStatut() == 4}">badge-error</c:when>
-                                                    </c:choose>">
-                                                    ${reservation.getStatut().getNomStatut()}
-                                                </span>
+                                                <c:choose>
+                                                    <c:when test="${reservation.getDateReservation().isBefore(LocalDateTime.now())
+                                                                    and reservation.getDateExpiration().isAfter(LocalDateTime.now())
+                                                                    and reservation.getStatut().getIdStatut() == 1}">
+                                                        <span class="badge badge-sm badge-primary">En cours</span>
+                                                    </c:when>
+                                                    <c:when test="${reservation.getDateExpiration().isBefore(LocalDateTime.now())}">
+                                                        <span class="badge badge-sm badge-secondary">Expirée</span>
+                                                    </c:when>
+                                                    <c:when test="${reservation.getStatut().getIdStatut() == 3}">
+                                                        <span class="badge badge-sm badge-success">Honorée</span>
+                                                    </c:when>
+                                                    <c:when test="${reservation.getStatut().getIdStatut() == 4}">
+                                                        <span class="badge badge-sm badge-error">En retard</span>
+                                                    </c:when>
+                                                </c:choose>
                                             </td>
                                             <td class="flex space-x-2">
                                                 <!-- Formulaire pour changer le statut -->
