@@ -9,5 +9,6 @@ import com.springjpa.bibliotheque.entity.ProlongationPret;
 
 @Repository
 public interface ProlongationPretRepository extends JpaRepository<ProlongationPret, Integer> {
-    List<ProlongationPret> findByPretIdPret(Integer idPret);
+    public List<ProlongationPret> findByPretIdPret(Integer idPret);
+    public List<ProlongationPret> findByPretAdherentIdAdherent(Integer idAdherent);
 }
