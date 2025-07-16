@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.springjpa.bibliotheque.entity.DureePret;
 import com.springjpa.bibliotheque.entity.Pret;
 import com.springjpa.bibliotheque.entity.Profil;
+import com.springjpa.bibliotheque.entity.ProlongationPret;
 import com.springjpa.bibliotheque.entity.TypePret;
 import com.springjpa.bibliotheque.repository.DureePretRepository;
 import com.springjpa.bibliotheque.repository.PretRepository;
@@ -24,6 +25,9 @@ public class PretService {
 
     @Autowired
     private DureePretRepository dureePretRepository;
+
+    @Autowired
+    private ProlongationPretService prolongationPretService;
 
     public Pret findById(Integer id){
         return pretRepository.findById(id).get();
@@ -68,6 +72,18 @@ public class PretService {
     public LocalDateTime getDateFinPret(Pret pret){
         Profil profilAdherent = pret.getAdherent().getProfil();
         DureePret dureePretAdherent = dureePretRepository.findByProfilIdProfil(profilAdherent.getIdProfil());
-        return pret.getDateDebut().plusDays(dureePretAdherent.getDuree());
+        List<ProlongationPret> prolongations = prolongationPretService.findByPretIdPret(pret.getIdPret());
+        // Sans prolongation
+        if(prolongations.isEmpty()){
+            return pret.getDateDebut().plusDays(dureePretAdherent.getDuree());
+        }
+        // En cas de prolongations
+        LocalDateTime finPret = prolongations.get(0).getDateProlongation().plusDays(dureePretAdherent.getDuree());    // Première prolongation
+        for(ProlongationPret prolongationPret : prolongations) {
+            if(finPret.isBefore(prolongationPret.getDateProlongation().plusDays(dureePretAdherent.getDuree()))) {
+                finPret = prolongationPret.getDateProlongation().plusDays(dureePretAdherent.getDuree());
+            }
+        }
+        return finPret;
     }
 }
