@@ -18,9 +18,11 @@ import com.springjpa.bibliotheque.entity.Adherent;
 import com.springjpa.bibliotheque.entity.Exemplaire;
 import com.springjpa.bibliotheque.entity.Livre;
 import com.springjpa.bibliotheque.entity.Pret;
+import com.springjpa.bibliotheque.entity.RetourPret;
 import com.springjpa.bibliotheque.service.ExemplaireService;
 import com.springjpa.bibliotheque.service.LivreService;
 import com.springjpa.bibliotheque.service.PretService;
+import com.springjpa.bibliotheque.service.RetourPretService;
 
 @RestController
 @RequestMapping("/api/livres")
@@ -36,6 +38,9 @@ public class ApiLivreController {
 
     @Autowired
     private PretService pretService;
+
+    @Autowired
+    private RetourPretService retourPretService;
 
     @GetMapping("/{id}/exemplaires-disponibilite")
     public ResponseEntity<LivreExemplairesDisponibiliteDTO> getLivreWithExemplairesDisponibilite(
@@ -60,10 +65,20 @@ public class ApiLivreController {
                         List<Pret> allPret = pretService.findByExemplaireIdExemplaire(exemplaire.getIdExemplaire());
                         boolean disponibilite = true;
                         for(Pret pret: allPret) {
-                            Adherent adherent = pret.getAdherent();
-                            if(!exemplaireService.isExemplaireDisponible(exemplaire, adherent, inOneWeek, now)) {
-                                disponibilite = false;
+                            LocalDateTime datePret = pret.getDateDebut();
+                            // LocalDateTime dateFinPret = pretService.getDateFinPret(pret);
+
+                            if(now.isAfter(datePret)) {
+                                RetourPret retour = retourPretService.findByPretIdPret(pret.getIdPret());
+                                if(retour == null) {
+                                    disponibilite = false;
+                                }
                             }
+                            
+                            // Adherent adherent = pret.getAdherent();
+                            // if(!exemplaireService.isExemplaireDisponible(exemplaire, adherent, inOneWeek, now)) {
+                            //     disponibilite = false;
+                            // }
                         }
                         return new ExemplaireDisponibiliteDTO(
                         exemplaire.getIdExemplaire(),
