@@ -26,6 +26,8 @@ import com.springjpa.bibliotheque.service.PretService;
 @RequestMapping("/api/livres")
 public class ApiLivreController {
 
+    // http://localhost:8081/api/livres/1/exemplaires-disponibilite
+
     @Autowired
     private LivreService livreService;
     
